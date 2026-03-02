@@ -1,0 +1,5 @@
+{
+  "name": "Remix: Simulador QMRA_08_02_2026",
+  "description": "Una herramienta de Evaluación Cuantitativa de Riesgos Microbiológicos (QMRA) de alta fidelidad que utiliza simulaciones de Monte Carlo para estimar riesgos de salud pública.",
+  "requestFramePermissions": []
+}
