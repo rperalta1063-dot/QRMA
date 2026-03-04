@@ -93,15 +93,19 @@ const TRANSLATIONS = {
     aboutTitle: "Sobre ProbRisk QMRA",
     aboutDescription: "ProbRisk es una herramienta de Evaluación Cuantitativa de Riesgos Microbiológicos (QMRA) diseñada para estimar el impacto en la salud pública de patógenos transmitidos por alimentos.",
     methodologyTitle: "Metodología de Monte Carlo",
-    methodologyDescription: "Utilizamos simulaciones de Monte Carlo para modelar la variabilidad y la incertidumbre en cada etapa de la cadena alimentaria. Al repetir el proceso miles de veces con valores aleatorios dentro de distribuciones estadísticas, obtenemos un rango probable de resultados en lugar de un único valor fijo.",
+    methodologyDescription: "ProbRisk utiliza simulaciones de Monte Carlo para abordar la complejidad de los sistemas biológicos. En lugar de usar valores fijos, asignamos distribuciones de probabilidad a cada parámetro (incertidumbre y variabilidad). El motor de simulación ejecuta miles de iteraciones independientes; en cada una, se extrae un valor aleatorio de las distribuciones definidas. Este proceso permite capturar escenarios extremos (brotes masivos) que un cálculo promedio ignoraría, proporcionando una visión probabilística del riesgo real.",
     guideTitle: "Guía de Configuración",
-    guideStep1: "1. Selección: Elija el alimento y el patógeno de interés. Los parámetros se ajustarán automáticamente a valores típicos.",
-    guideStep2: "2. Cadena de Suministro: Ajuste los cambios logarítmicos (Δ Log) para cada etapa. Valores negativos indican reducción (ej. cocción), positivos indican crecimiento (ej. abuso térmico).",
-    guideStep3: "3. Cinética: Configure el crecimiento bacteriano y la inactivación térmica (Modelo Weibull).",
-    guideStep4: "4. Ejecución: Presione 'Ejecutar Monte Carlo' para procesar miles de escenarios posibles.",
-    guideStep5: "5. Resultados: Analice el impacto en salud (infecciones, muertes) y la carga económica estimada.",
+    guideStep1: "1. Selección de Perfil: Elija el alimento y patógeno. Esto carga automáticamente el modelo dosis-respuesta (Beta-Poisson) y los parámetros económicos por defecto.",
+    guideStep2: "2. Dinámica de la Cadena: Configure los cambios logarítmicos (Δ Log). Un valor de -2.0 en procesamiento indica una reducción de 100 veces en la carga bacteriana. Los valores positivos representan crecimiento por abuso térmico o fallos de higiene.",
+    guideStep3: "3. Cinética Avanzada: Defina la tasa de crecimiento (Log/h) y el tiempo de exposición. Para la inactivación, el modelo Weibull (Delta y P) permite modelar curvas no lineales, capturando la resistencia de subpoblaciones bacterianas.",
+    guideStep4: "4. Simulación: Al presionar 'Ejecutar', el sistema realiza miles de cálculos de dosis ingerida y probabilidad de infección individual para cada ración consumida en la población.",
+    guideStep5: "5. Análisis de Resultados: Evalúe no solo la media, sino la dispersión de los datos. Un riesgo alto con baja frecuencia puede ser tan crítico como un riesgo moderado constante.",
     interpretationTitle: "Interpretación de Resultados",
-    interpretationDesc: "Los resultados muestran el promedio de miles de simulaciones. La curva de distribución de casos indica la probabilidad de brotes de diferentes magnitudes.",
+    interpretationDesc: "La interpretación debe centrarse en tres ejes: 1. Distribución de Casos: El histograma muestra la frecuencia de diferentes tamaños de brotes; una cola larga a la derecha indica riesgo de eventos masivos. 2. Impacto Social: Traduce el daño a la salud en términos monetarios, facilitando la toma de decisiones costo-beneficio. 3. Sensibilidad: Identifica qué parámetro (ej. temperatura de retail) tiene mayor peso en el resultado final, señalando dónde invertir en medidas de control.",
+    walkthroughTitle: "Walkthrough de Parámetros Complejos",
+    walkthroughProcessing: "Procesamiento (Δ Log): Representa la eficacia de las medidas de control industrial. Un valor negativo alto es el objetivo de cualquier plan HACCP.",
+    walkthroughKinetics: "Cinética de Crecimiento: Crucial en productos listos para el consumo. Pequeños cambios en la tasa de crecimiento pueden resultar en dosis infectivas masivas debido a la naturaleza exponencial de las bacterias.",
+    walkthroughWeibull: "Modelo Weibull: El parámetro 'Delta' es el tiempo para la primera reducción logarítmica. 'P' define la curvatura: P < 1 indica subpoblaciones resistentes (curva cóncava), P > 1 indica daño acumulativo (curva convexa).",
     sectionHelp: "Guía de Sección",
     sectionHelpBase: "Seleccione el alimento y el patógeno. La población expuesta y las raciones por año determinan la escala del impacto total.",
     sectionHelpEcon: "Defina los costos asociados a la enfermedad. Estos valores se utilizan para calcular el impacto social total en términos monetarios.",
@@ -248,15 +252,19 @@ const TRANSLATIONS = {
     aboutTitle: "About ProbRisk QMRA",
     aboutDescription: "ProbRisk is a Quantitative Microbiological Risk Assessment (QMRA) tool designed to estimate the public health impact of foodborne pathogens.",
     methodologyTitle: "Monte Carlo Methodology",
-    methodologyDescription: "We use Monte Carlo simulations to model variability and uncertainty at every stage of the food chain. By repeating the process thousands of times with random values from statistical distributions, we obtain a probable range of outcomes rather than a single fixed point.",
+    methodologyDescription: "ProbRisk employs Monte Carlo simulations to address the inherent complexity of biological systems. Instead of using point estimates, we assign probability distributions to each parameter to account for uncertainty and variability. The engine runs thousands of independent iterations; in each, a random value is drawn from the defined distributions. This process captures extreme scenarios (mass outbreaks) that a simple average would miss, providing a robust probabilistic view of real-world risk.",
     guideTitle: "Setup Guide",
-    guideStep1: "1. Selection: Choose the food and pathogen of interest. Parameters will auto-adjust to typical values.",
-    guideStep2: "2. Supply Chain: Adjust log changes (Δ Log) for each stage. Negative values indicate reduction (e.g., cooking), positive values indicate growth (e.g., thermal abuse).",
-    guideStep3: "3. Kinetics: Configure bacterial growth and thermal inactivation (Weibull Model).",
-    guideStep4: "4. Execution: Press 'Run Monte Carlo' to process thousands of possible scenarios.",
-    guideStep5: "5. Results: Analyze health impact (infections, deaths) and estimated economic burden.",
+    guideStep1: "1. Profile Selection: Choose your food and pathogen. This automatically loads the specific dose-response model (Beta-Poisson) and default economic parameters.",
+    guideStep2: "2. Chain Dynamics: Configure logarithmic changes (Δ Log). A value of -2.0 in processing indicates a 100-fold reduction in bacterial load. Positive values represent growth due to thermal abuse or hygiene failures.",
+    guideStep3: "3. Advanced Kinetics: Define the growth rate (Log/h) and exposure time. For inactivation, the Weibull model (Delta and P) allows for non-linear survival curves, capturing the resistance of bacterial subpopulations.",
+    guideStep4: "4. Simulation: Upon clicking 'Run', the system performs thousands of individual dose calculations and infection probability assessments for every serving consumed by the population.",
+    guideStep5: "5. Results Analysis: Evaluate not just the mean, but the data dispersion. A high-impact low-frequency risk can be just as critical as a constant moderate risk.",
     interpretationTitle: "Interpreting Results",
-    interpretationDesc: "Results show the average of thousands of simulations. The case distribution curve indicates the probability of outbreaks of different magnitudes.",
+    interpretationDesc: "Interpretation should focus on three pillars: 1. Case Distribution: The histogram shows the frequency of different outbreak sizes; a long right tail indicates the risk of massive events. 2. Social Impact: Translates health damage into monetary terms, facilitating cost-benefit decision-making. 3. Sensitivity: Identifies which parameter (e.g., retail temperature) has the most weight on the final result, highlighting where to prioritize control measures.",
+    walkthroughTitle: "Complex Parameters Walkthrough",
+    walkthroughProcessing: "Processing (Δ Log): Represents the efficacy of industrial control measures. A high negative value is the goal of any robust HACCP plan.",
+    walkthroughKinetics: "Growth Kinetics: Crucial for ready-to-eat products. Small changes in growth rate can lead to massive infective doses due to the exponential nature of bacterial multiplication.",
+    walkthroughWeibull: "Weibull Model: The 'Delta' parameter is the time for the first log-reduction. 'P' defines the curvature: P < 1 indicates resistant subpopulations (concave), P > 1 indicates cumulative damage (convex).",
     sectionHelp: "Section Guide",
     sectionHelpBase: "Select the food and pathogen. The exposed population and servings per year determine the scale of the total impact.",
     sectionHelpEcon: "Define the costs associated with the illness. These values are used to calculate the total social impact in monetary terms.",
@@ -403,15 +411,19 @@ const TRANSLATIONS = {
     aboutTitle: "À Propos de ProbRisk QMRA",
     aboutDescription: "ProbRisk est un outil d'Évaluation Quantitative des Risques Microbiologiques (QMRA) conçu pour estimer l'impact sur la santé publique des agents pathogènes d'origine alimentaire.",
     methodologyTitle: "Méthodologie de Monte Carlo",
-    methodologyDescription: "Nous utilisons des simulations de Monte Carlo pour modéliser la variabilité et l'incertitude à chaque étape de la chaîne alimentaire. En répétant le processus des milliers de fois avec des valeurs aléatoires issues de distributions statistiques, nous obtenons une plage probable de résultats plutôt qu'une valeur fixe unique.",
+    methodologyDescription: "ProbRisk utilise des simulations de Monte Carlo pour aborder la complexité des systèmes biologiques. Au lieu de valeurs fixes, nous assignons des distributions de probabilité à chaque paramètre (incertitude et variabilité). Le moteur exécute des milliers d'itérations indépendantes ; dans chacune, une valeur aléatoire est tirée des distributions. Ce processus permet de capturer des scénarios extrêmes (foyers massifs) qu'un calcul moyen ignorerait, offrant une vision probabiliste du risque réel.",
     guideTitle: "Guide de Configuration",
-    guideStep1: "1. Sélection : Choisissez l'aliment et le pathogène. Les paramètres s'ajustent automatiquement.",
-    guideStep2: "2. Chaîne d'Approvisionnement : Ajustez les variations logarithmiques (Δ Log). Négatif = réduction, Positif = croissance.",
-    guideStep3: "3. Cinétique : Configurez la croissance et l'inactivation thermique (Modèle Weibull).",
-    guideStep4: "4. Exécution : Cliquez sur 'Lancer Monte Carlo' pour traiter des milliers de scénarios.",
-    guideStep5: "5. Résultats : Analysez l'impact sanitaire et la charge économique estimée.",
+    guideStep1: "1. Sélection du Profil : Choisissez l'aliment et le pathogène. Cela charge automatiquement le modèle dose-réponse (Beta-Poisson) et les paramètres économiques par défaut.",
+    guideStep2: "2. Dynamique de la Chaîne : Configurez les changements logarithmiques (Δ Log). Une valeur de -2.0 en traitement indique une réduction au centième de la charge bactérienne. Les valeurs positives représentent la croissance.",
+    guideStep3: "3. Cinétique Avancée : Définissez le taux de croissance (Log/h) et le temps d'exposition. Pour l'inactivation, le modèle Weibull (Delta et P) permet de modéliser des courbes non linéaires.",
+    guideStep4: "4. Simulation : En cliquant sur 'Lancer', le système effectue des milliers de calculs de doses ingérées et de probabilités d'infection pour chaque portion consommée.",
+    guideStep5: "5. Analyse des Résultats : Évaluez non seulement la moyenne, mais aussi la dispersion des données. Un risque rare mais massif peut être aussi critique qu'un risque modéré constant.",
     interpretationTitle: "Interprétation des Résultats",
-    interpretationDesc: "Les résultats montrent la moyenne de milliers de simulations. La courbe de distribution indique la probabilité de foyers de différentes ampleurs.",
+    interpretationDesc: "L'interprétation doit se concentrer sur trois axes : 1. Distribution des Cas : L'histogramme montre la fréquence des différentes tailles de foyers ; une queue longue à droite indique un risque d'événements massifs. 2. Impact Social : Traduit les dommages sanitaires en termes monétaires pour faciliter les décisions coût-bénéfice. 3. Sensibilité : Identifie quel paramètre a le plus de poids sur le résultat final.",
+    walkthroughTitle: "Walkthrough des Paramètres Complexes",
+    walkthroughProcessing: "Traitement (Δ Log) : Représente l'efficacité des mesures de contrôle industriel. Une valeur négative élevée est l'objectif de tout plan HACCP.",
+    walkthroughKinetics: "Cinétique de Croissance : Cruciale pour les produits prêts à consommer. De petits changements de taux peuvent entraîner des doses infectieuses massives.",
+    walkthroughWeibull: "Modèle Weibull : Le paramètre 'Delta' est le temps pour la première réduction log. 'P' définit la courbure : P < 1 indique des sous-populations résistantes, P > 1 indique un dommage cumulatif.",
     sectionHelp: "Guide de Section",
     sectionHelpBase: "Sélectionnez l'aliment et le pathogène. La population exposée et les portions par an déterminent l'ampleur de l'impact total.",
     sectionHelpEcon: "Définissez les coûts associés à la maladie. Ces valeurs sont utilisées pour calculer l'impact social total en termes monétaires.",
@@ -1213,6 +1225,15 @@ const App: React.FC = () => {
                   </p>
                 </div>
 
+                <div className="space-y-2">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-blue-500">{t.walkthroughTitle}</h3>
+                  <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                    <li className="flex gap-2"><div className="mt-1.5 w-1 h-1 rounded-full bg-blue-500 shrink-0" /> {t.walkthroughProcessing}</li>
+                    <li className="flex gap-2"><div className="mt-1.5 w-1 h-1 rounded-full bg-blue-500 shrink-0" /> {t.walkthroughKinetics}</li>
+                    <li className="flex gap-2"><div className="mt-1.5 w-1 h-1 rounded-full bg-blue-500 shrink-0" /> {t.walkthroughWeibull}</li>
+                  </ul>
+                </div>
+
                 <div className="grid grid-cols-2 gap-8 pt-4 border-t border-slate-100 dark:border-slate-800">
                   <div>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{t.versionLabel}</h4>
@@ -1485,7 +1506,7 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 gap-8">
                   <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm">
                     <h3 className="text-[11px] font-black text-orange-500 uppercase tracking-widest mb-8 flex items-center gap-2"><Sigma size={16}/> {t.caseDist}</h3>
                     <div className="h-64 w-full">
@@ -1500,126 +1521,180 @@ const App: React.FC = () => {
                       </ResponsiveContainer>
                     </div>
                   </div>
-                  <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm">
-                    <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-[11px] font-black text-blue-500 uppercase tracking-widest flex items-center gap-2"><Flame size={16}/> {t.inactivationProfile}</h3>
-                      <InfoTooltip text={t.tooltips.inact} />
-                    </div>
-                    <div className="h-64 w-full">
-                      <ResponsiveContainer>
-                        <LineChart data={weibullInactivationData}>
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                          <XAxis dataKey="time" fontSize={9} label={{ value: t.timeMin, position: 'bottom', fontSize: 10 }} />
-                          <YAxis fontSize={9} label={{ value: t.reductionLog, angle: -90, position: 'insideLeft', fontSize: 10 }} />
-                          <Tooltip content={<CustomTooltip />} />
-                          <Line type="monotone" dataKey="reduction" stroke="#3b82f6" strokeWidth={3} dot={false} />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
                 </div>
 
-                {/* Weibull Details Section */}
-                <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm">
-                  <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-widest flex items-center gap-2"><Calculator size={16}/> {t.inactivationDetailTitle}</h3>
-                    <InfoTooltip text={t.tooltips.weibullDetail} />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <div className="bg-slate-50 dark:bg-slate-800/40 p-6 rounded-3xl border border-slate-100 dark:border-slate-700">
-                        <h4 className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                           <ChevronRight size={12} /> {t.formulaTitle}
-                        </h4>
-                        <div className="font-serif text-lg md:text-xl text-center py-4 text-slate-700 dark:text-slate-300">
-                          Log<sub>10</sub>(N/N<sub>0</sub>) = -(t/&delta;)<sup>p</sup>
-                        </div>
-                        <div className="mt-4 grid grid-cols-3 gap-2 text-center border-t border-slate-100 dark:border-slate-700 pt-4">
-                          <div>
-                            <p className="text-[9px] text-slate-400 font-bold uppercase">&delta;</p>
-                            <p className="text-xs font-black">{params.delta}</p>
-                          </div>
-                          <div>
-                            <p className="text-[9px] text-slate-400 font-bold uppercase">p</p>
-                            <p className="text-xs font-black">{params.p}</p>
-                          </div>
-                          <div>
-                            <p className="text-[9px] text-slate-400 font-bold uppercase">t<sub>total</sub></p>
-                            <p className="text-xs font-black">{params.inactivationTime} min</p>
-                          </div>
-                        </div>
+                {/* Combined Weibull Inactivation Section */}
+                <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-8">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-blue-500/10 p-2 rounded-xl">
+                        <Flame size={20} className="text-blue-500" />
                       </div>
+                      <div>
+                        <h3 className="text-[11px] font-black text-blue-500 uppercase tracking-widest">{t.inactivationProfile}</h3>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">{t.inactivationDetailTitle}</p>
+                      </div>
+                    </div>
+                    <InfoTooltip text={t.tooltips.inact} />
+                  </div>
 
-                      <div className="bg-blue-600 p-6 rounded-3xl shadow-lg shadow-blue-600/20 text-white">
-                        <div className="flex items-center justify-between">
-                          <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">{t.totalReduction}</p>
-                          <Flame size={16} className="opacity-50" />
-                        </div>
-                        <p className="text-3xl font-black mt-1">
-                          {Math.pow(params.inactivationTime / params.delta, params.p).toFixed(3)}
+                  <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+                    <div className="xl:col-span-7 space-y-6">
+                      <div className="h-72 w-full bg-slate-50/50 dark:bg-slate-800/20 rounded-3xl p-4">
+                        <ResponsiveContainer>
+                          <LineChart data={weibullInactivationData}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                            <XAxis dataKey="time" fontSize={9} label={{ value: t.timeMin, position: 'bottom', fontSize: 10 }} />
+                            <YAxis fontSize={9} label={{ value: t.reductionLog, angle: -90, position: 'insideLeft', fontSize: 10 }} />
+                            <Tooltip content={<CustomTooltip />} />
+                            <Line type="monotone" dataKey="reduction" stroke="#3b82f6" strokeWidth={4} dot={false} animationDuration={1500} />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <div className="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-2xl border border-blue-100 dark:border-blue-900/30">
+                        <p className="text-[11px] text-blue-700 dark:text-blue-300 leading-relaxed italic">
+                          <Info size={12} className="inline mr-1 mb-0.5" />
+                          {t.walkthroughWeibull}
                         </p>
                       </div>
                     </div>
 
-                    <div className="bg-slate-50 dark:bg-slate-800/20 rounded-3xl border border-slate-100 dark:border-slate-800 overflow-hidden">
-                       <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700">
-                         <h4 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{t.inactivationSummary}</h4>
-                       </div>
-                       <table className="w-full text-[11px]">
-                         <thead>
-                           <tr className="text-left text-slate-400 font-bold border-b border-slate-100 dark:border-slate-800">
-                             <th className="px-6 py-3">{t.timeMin}</th>
-                             <th className="px-6 py-3 text-right">{t.reductionLog}</th>
-                           </tr>
-                         </thead>
-                         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                           {weibullTableData.map((row, idx) => (
-                             <tr key={idx} className="hover:bg-slate-100/50 dark:hover:bg-slate-700/20 transition-colors">
-                               <td className="px-6 py-3 font-mono text-slate-500">{row.t.toFixed(1)}</td>
-                               <td className="px-6 py-3 text-right font-black text-blue-600 dark:text-blue-400">{row.logReduction.toFixed(3)}</td>
+                    <div className="xl:col-span-5 space-y-6">
+                      <div className="bg-slate-50 dark:bg-slate-800/40 p-6 rounded-3xl border border-slate-100 dark:border-slate-700">
+                        <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                           <Calculator size={12} /> {t.formulaTitle}
+                        </h4>
+                        <div className="font-serif text-xl text-center py-4 text-slate-700 dark:text-slate-300">
+                          Log<sub>10</sub>(N/N<sub>0</sub>) = -(t/&delta;)<sup>p</sup>
+                        </div>
+                        <div className="mt-4 grid grid-cols-3 gap-2 text-center border-t border-slate-100 dark:border-slate-700 pt-4">
+                          <div>
+                            <p className="text-[9px] text-slate-400 font-bold uppercase">&delta; (Delta)</p>
+                            <p className="text-sm font-black text-blue-600">{params.delta}</p>
+                          </div>
+                          <div>
+                            <p className="text-[9px] text-slate-400 font-bold uppercase">p (Shape)</p>
+                            <p className="text-sm font-black text-blue-600">{params.p}</p>
+                          </div>
+                          <div>
+                            <p className="text-[9px] text-slate-400 font-bold uppercase">t (Total)</p>
+                            <p className="text-sm font-black text-blue-600">{params.inactivationTime}m</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-blue-600 p-6 rounded-3xl shadow-lg shadow-blue-600/20 text-white relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 -rotate-12"><Flame size={48} /></div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">{t.totalReduction}</p>
+                        <div className="flex items-baseline gap-2">
+                          <p className="text-4xl font-black mt-1">
+                            {Math.pow(params.inactivationTime / params.delta, params.p).toFixed(3)}
+                          </p>
+                          <span className="text-xs font-bold opacity-70">Log<sub>10</sub></span>
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-50 dark:bg-slate-800/20 rounded-3xl border border-slate-100 dark:border-slate-800 overflow-hidden">
+                         <table className="w-full text-[10px]">
+                           <thead>
+                             <tr className="text-left text-slate-400 font-bold border-b border-slate-100 dark:border-slate-800">
+                               <th className="px-4 py-2">{t.timeMin}</th>
+                               <th className="px-4 py-2 text-right">{t.reductionLog}</th>
                              </tr>
-                           ))}
-                         </tbody>
-                       </table>
+                           </thead>
+                           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                             {weibullTableData.map((row, idx) => (
+                               <tr key={idx} className="hover:bg-slate-100/50 dark:hover:bg-slate-700/20 transition-colors">
+                                 <td className="px-4 py-2 font-mono text-slate-500">{row.t.toFixed(1)}</td>
+                                 <td className="px-4 py-2 text-right font-black text-blue-600 dark:text-blue-400">{row.logReduction.toFixed(3)}</td>
+                               </tr>
+                             ))}
+                           </tbody>
+                         </table>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Dose-Response Chart */}
-                <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm">
-                  <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-[11px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2"><MicroscopeIcon size={16}/> {t.doseResponseTitle}</h3>
+                {/* Enhanced Dose-Response Section */}
+                <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm space-y-8">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-emerald-500/10 p-2 rounded-xl">
+                        <MicroscopeIcon size={20} className="text-emerald-500" />
+                      </div>
+                      <div>
+                        <h3 className="text-[11px] font-black text-emerald-500 uppercase tracking-widest">{t.doseResponseTitle}</h3>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Beta-Poisson Model</p>
+                      </div>
+                    </div>
                     <InfoTooltip text={t.tooltips.doseResponse} />
                   </div>
-                  <div className="h-72 w-full">
-                    <ResponsiveContainer>
-                      <LineChart data={doseResponseData}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                        <XAxis 
-                          dataKey="logDose" 
-                          fontSize={9} 
-                          label={{ value: 'Log10 Dose (CFU)', position: 'bottom', fontSize: 10, offset: 0 }} 
-                        />
-                        <YAxis 
-                          fontSize={9} 
-                          domain={[0, 1]} 
-                          label={{ value: t.probIllnessLabel, angle: -90, position: 'insideLeft', fontSize: 10 }} 
-                        />
-                        <Tooltip content={<CustomTooltip />} />
-                        <Line 
-                          type="monotone" 
-                          dataKey="prob" 
-                          name={t.probIllnessLabel}
-                          stroke="#10b981" 
-                          strokeWidth={3} 
-                          dot={false} 
-                          animationDuration={1500}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
+
+                  <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+                    <div className="xl:col-span-8">
+                      <div className="h-72 w-full bg-slate-50/50 dark:bg-slate-800/20 rounded-3xl p-4">
+                        <ResponsiveContainer>
+                          <LineChart data={doseResponseData}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                            <XAxis 
+                              dataKey="logDose" 
+                              fontSize={9} 
+                              label={{ value: 'Log10 Dose (CFU)', position: 'bottom', fontSize: 10, offset: 0 }} 
+                            />
+                            <YAxis 
+                              fontSize={9} 
+                              domain={[0, 1]} 
+                              label={{ value: t.probIllnessLabel, angle: -90, position: 'insideLeft', fontSize: 10 }} 
+                            />
+                            <Tooltip content={<CustomTooltip />} />
+                            <Line 
+                              type="monotone" 
+                              dataKey="prob" 
+                              name={t.probIllnessLabel}
+                              stroke="#10b981" 
+                              strokeWidth={4} 
+                              dot={false} 
+                              animationDuration={1500}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+
+                    <div className="xl:col-span-4 space-y-6">
+                      <div className="bg-slate-50 dark:bg-slate-800/40 p-6 rounded-3xl border border-slate-100 dark:border-slate-700">
+                        <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                           <Sigma size={12} /> {t.formulaTitle}
+                        </h4>
+                        <div className="font-serif text-lg text-center py-4 text-slate-700 dark:text-slate-300">
+                          P<sub>inf</sub> = 1 - (1 + d/&beta;)<sup>-&alpha;</sup>
+                        </div>
+                        <div className="mt-4 grid grid-cols-2 gap-4 text-center border-t border-slate-100 dark:border-slate-700 pt-4">
+                          <div>
+                            <p className="text-[9px] text-slate-400 font-bold uppercase">&alpha; (Alpha)</p>
+                            <p className="text-sm font-black text-emerald-600">{params.alpha}</p>
+                          </div>
+                          <div>
+                            <p className="text-[9px] text-slate-400 font-bold uppercase">&beta; (Beta)</p>
+                            <p className="text-sm font-black text-emerald-600">{params.beta.toExponential(2)}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
+                        <div className="flex gap-3">
+                          <Info size={14} className="text-emerald-500 shrink-0 mt-0.5" />
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Model Insight</p>
+                            <p className="text-[10px] text-emerald-600 dark:text-emerald-300 leading-relaxed italic">
+                              The Beta-Poisson model accounts for the probability of a single cell initiating infection, considering host-pathogen variability.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-6 text-[10px] text-slate-400 font-medium italic text-center uppercase tracking-wider">{t.doseLabel} vs {t.probIllnessLabel}</div>
                 </div>
 
                 {/* Sensitivity Analysis - Tornado Chart */}
