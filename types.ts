@@ -19,9 +19,12 @@ export interface SimulationParams {
 
   // Parámetros Cinéticos (Para Gráficas de la imagen)
   growthRate: number;      // Tasa de crecimiento (Log10/h)
+  growthRateStd: number;   // Desviación estándar de la tasa de crecimiento
   growthTime: number;      // Tiempo de abuso térmico (h)
   delta: number;           // Parámetro de escala Weibull (min)
+  deltaStd: number;        // Desviación estándar del parámetro Delta
   p: number;               // Parámetro de forma Weibull
+  pStd: number;            // Desviación estándar del parámetro P
   inactivationTime: number; // Tiempo de proceso térmico (min)
   
   // Dosis-Respuesta

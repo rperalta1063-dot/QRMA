@@ -6,8 +6,8 @@ import {
 } from 'recharts';
 import { 
   Activity, Play, RefreshCcw, BarChart3, 
-  HelpCircle, Moon, Sun, Sigma, Clock, Flame, DollarSign, Info, Microscope, Truck, ShoppingBag, UtensilsCrossed, Factory, Users, TrendingUp,
-  Fish, Beef, Trash2, FileDown, ShieldAlert, HeartPulse, Scale, Share2, Check, Languages, Salad, Droplets, X, Zap, AlertCircle, Banknote, Coins, Microscope as MicroscopeIcon, Calculator, ChevronRight
+  HelpCircle, Moon, Sun, Sigma, Clock, Flame, DollarSign, Info, ShoppingBag, UtensilsCrossed, Factory, Users, TrendingUp,
+  Trash2, FileDown, ShieldAlert, HeartPulse, Scale, Share2, Check, X, Zap, AlertCircle, Banknote, Microscope as MicroscopeIcon, Calculator
 } from 'lucide-react';
 import { SimulationParams, SimulationResults, PathogenProfile, FoodProfile, SavedSimulation } from './types';
 import { stats } from './services/statsService';
@@ -63,6 +63,8 @@ const TRANSLATIONS = {
     severe: "GRAVES",
     deaths: "MUERTES",
     absence: "AUSENTISMO",
+    fatalityRate: "LETALIDAD",
+    stdDev: "Desv. Est.",
     avgEst: "Estimado Promedio",
     medCare: "Atención Médica",
     lethality: "Letalidad Poblacional",
@@ -120,6 +122,10 @@ const TRANSLATIONS = {
     saveRun: "Guardar Simulación",
     comparisonTitle: "Comparativa de Escenarios",
     compareBtn: "Comparar",
+    compareSelected: "Comparar Seleccionados",
+    diffLabel: "Diferencia",
+    paramImpact: "Impacto de Parámetros",
+    riskSummary: "Resumen de Riesgo",
     savedRuns: "Simulaciones Guardadas",
     noSavedRuns: "No hay simulaciones guardadas.",
     clearSaved: "Limpiar Historial",
@@ -140,6 +146,8 @@ const TRANSLATIONS = {
     impactPercent: "% de Impacto en Riesgo",
     countLabel: "Frecuencia",
     logLoadLabel: "Carga (Log10)",
+    modelInsightTitle: "Perspectiva del Modelo",
+    modelInsightDesc: "El modelo Beta-Poisson considera la probabilidad de que una sola célula inicie la infección, teniendo en cuenta la variabilidad entre el huésped y el patógeno.",
     errorRequired: "Requerido",
     errorRange: "Rango: {min} - {max}",
     tooltips: {
@@ -147,6 +155,7 @@ const TRANSLATIONS = {
       sev: "Casos que requieren hospitalización o cuidados médicos intensivos según la tasa definida.",
       dead: "Estimación de fallecimientos basados en la tasa de mortalidad y el número de casos.",
       abs: "Días totales de trabajo perdidos por la población afectada, incluyendo convalecencia.",
+      fatality: "Porcentaje de fallecimientos en relación al total de personas infectadas.",
       pop: "Población total susceptible de consumir el producto en el periodo evaluado.",
       serv: "Frecuencia de consumo individual estimada por año.",
       iter: "Número de veces que se repite la simulación para capturar la variabilidad estadística.",
@@ -222,6 +231,8 @@ const TRANSLATIONS = {
     severe: "SEVERE",
     deaths: "DEATHS",
     absence: "ABSENTEEISM",
+    fatalityRate: "FATALITY RATE",
+    stdDev: "Std Dev",
     avgEst: "Average Estimate",
     medCare: "Medical Care",
     lethality: "Population Lethality",
@@ -279,6 +290,10 @@ const TRANSLATIONS = {
     saveRun: "Save Simulation",
     comparisonTitle: "Scenario Comparison",
     compareBtn: "Compare",
+    compareSelected: "Compare Selected",
+    diffLabel: "Difference",
+    paramImpact: "Parameter Impact",
+    riskSummary: "Risk Summary",
     savedRuns: "Saved Simulations",
     noSavedRuns: "No saved simulations yet.",
     clearSaved: "Clear History",
@@ -299,6 +314,8 @@ const TRANSLATIONS = {
     impactPercent: "% Impact on Risk",
     countLabel: "Frequency",
     logLoadLabel: "Load (Log10)",
+    modelInsightTitle: "Model Insight",
+    modelInsightDesc: "The Beta-Poisson model accounts for the probability of a single cell initiating infection, considering host-pathogen variability.",
     errorRequired: "Required",
     errorRange: "Range: {min} - {max}",
     tooltips: {
@@ -306,6 +323,7 @@ const TRANSLATIONS = {
       sev: "Cases requiring hospitalization or intensive medical care based on the defined rate.",
       dead: "Estimated deaths based on mortality rate and total case count.",
       abs: "Total work days lost by the affected population, including recovery time.",
+      fatality: "Percentage of deaths relative to the total number of infections.",
       pop: "Total population susceptible to consuming the product in the evaluated period.",
       serv: "Estimated individual consumption frequency per year.",
       iter: "Number of simulation loops to capture statistical variability.",
@@ -381,6 +399,8 @@ const TRANSLATIONS = {
     severe: "GRAVES",
     deaths: "DÉCÈS",
     absence: "ABSENTÉISME",
+    fatalityRate: "LÉTALITÉ",
+    stdDev: "Écart Type",
     avgEst: "Estimation Moyenne",
     medCare: "Soins Médicaux",
     lethality: "Létalité Populationnelle",
@@ -438,6 +458,10 @@ const TRANSLATIONS = {
     saveRun: "Sauvegarder Simulation",
     comparisonTitle: "Comparaison de Scénarios",
     compareBtn: "Comparer",
+    compareSelected: "Comparer la sélection",
+    diffLabel: "Différence",
+    paramImpact: "Impact des paramètres",
+    riskSummary: "Résumé des risques",
     savedRuns: "Simulations Sauvegardées",
     noSavedRuns: "Aucune simulation sauvegardée.",
     clearSaved: "Effacer l'Historique",
@@ -458,6 +482,8 @@ const TRANSLATIONS = {
     impactPercent: "% d'Impact sur le Risque",
     countLabel: "Fréquence",
     logLoadLabel: "Charge (Log10)",
+    modelInsightTitle: "Aperçu du Modèle",
+    modelInsightDesc: "Le modèle Beta-Poisson prend en compte la probabilité qu'une seule cellule déclenche une infection, en considérant la variabilité hôte-pathogène.",
     errorRequired: "Obligatoire",
     errorRange: "Plage: {min} - {max}",
     tooltips: {
@@ -465,6 +491,7 @@ const TRANSLATIONS = {
       sev: "Cas nécessitant une hospitalisation ou des soins intensifs.",
       dead: "Décès estimés basés sur le taux de mortalité.",
       abs: "Nombre total de jours de travail perdus par la population affectée.",
+      fatality: "Pourcentage de décès par rapport au nombre total d'infections.",
       pop: "Population totale susceptible de consommer le produit.",
       serv: "Fréquence de consommation individuelle estimée par an.",
       iter: "Nombre de boucles de simulation pour capturer la variabilité.",
@@ -707,9 +734,12 @@ const VALIDATION_RULES: Record<string, { min: number, max: number }> = {
   distributionDeltaLog: { min: -15, max: 15 },
   preparationDeltaLog: { min: -15, max: 15 },
   growthRate: { min: 0, max: 5 },
+  growthRateStd: { min: 0, max: 2 },
   growthTime: { min: 0, max: 2000 },
   delta: { min: 0.01, max: 1000 },
+  deltaStd: { min: 0, max: 100 },
   p: { min: 0.1, max: 10 },
+  pStd: { min: 0, max: 5 },
   inactivationTime: { min: 0, max: 1000 },
   alpha: { min: 0.0001, max: 1000 },
   beta: { min: 0.0001, max: 1000000000 },
@@ -727,8 +757,8 @@ const DEFAULT_PARAMS: SimulationParams = {
   prevalence: 0.15, initialLogMean: 1.5, initialLogStd: 0.5,
   servingSize: 100, populationSize: 100000, servingsPerYear: 52,
   iterations: 10000, processingDeltaLog: -3.0, transportDeltaLog: 0.5,
-  distributionDeltaLog: 0.2, preparationDeltaLog: -2.0, growthRate: 0.05,
-  growthTime: 12, delta: 5, p: 1.2, inactivationTime: 10,
+  distributionDeltaLog: 0.2, preparationDeltaLog: -2.0, growthRate: 0.05, growthRateStd: 0,
+  growthTime: 12, delta: 5, deltaStd: 0, p: 1.2, pStd: 0, inactivationTime: 10,
   alpha: 0.25, beta: 1500, illnessProb: 0.5, hospRate: 0.22,
   mortalityRate: 0.005, absenceDays: 4.5,
   costHosp: 15000, costAmb: 500, costAbsence: 200, costDeath: 2000000
@@ -795,6 +825,171 @@ const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
   return null;
 };
 
+const ComparisonModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  selectedSims: SavedSimulation[];
+  t: any;
+  language: string;
+}> = ({ isOpen, onClose, selectedSims, t, language }) => {
+  if (!isOpen) return null;
+
+  const formatValue = (val: number, isCurrency = false) => {
+    return new Intl.NumberFormat(language === 'fr' ? 'fr-FR' : 'en-US', {
+      minimumFractionDigits: isCurrency ? 2 : 4,
+      maximumFractionDigits: isCurrency ? 2 : 4
+    }).format(val);
+  };
+
+  const getEconomicTotal = (sim: SavedSimulation) => {
+    const factor = sim.params.servingsPerYear;
+    const annualHosp = sim.results.summary.hospitalized * factor;
+    const annualIll = sim.results.summary.ill * factor;
+    const annualAbsence = sim.results.summary.absence * factor;
+    const annualDeaths = sim.results.summary.deaths * factor;
+    const annualNonHosp = Math.max(0, annualIll - annualHosp);
+    return (annualHosp * sim.params.costHosp) + (annualNonHosp * sim.params.costAmb) + (annualAbsence * sim.params.costAbsence) + (annualDeaths * sim.params.costDeath);
+  };
+
+  const getMinMax = (key: string, isResult = true) => {
+    const values = selectedSims.map(sim => isResult ? (sim.results.summary as any)[key] : (sim.params as any)[key]);
+    return { min: Math.min(...values), max: Math.max(...values) };
+  };
+
+  const econTotals = selectedSims.map(getEconomicTotal);
+  const econMinMax = { min: Math.min(...econTotals), max: Math.max(...econTotals) };
+
+  return (
+    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in no-print">
+      <div className="bg-white dark:bg-slate-900 w-full max-w-6xl rounded-[2.5rem] shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden relative flex flex-col max-h-[90vh]">
+        <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-4">
+            <div className="bg-blue-600 p-3 rounded-2xl shadow-xl shadow-blue-500/20">
+              <BarChart3 className="text-white" size={24} />
+            </div>
+            <div>
+              <h2 className="text-2xl font-black">{t.comparisonTitle}</h2>
+              <p className="text-slate-500 font-medium text-sm">{selectedSims.length} {t.scenario.toLowerCase()}s</p>
+            </div>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-auto p-8 custom-scrollbar">
+          <div className="min-w-[800px]">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-left border-b border-slate-100 dark:border-slate-800 w-64">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t.scenario}</span>
+                  </th>
+                  {selectedSims.map((sim, idx) => (
+                    <th key={sim.id} className="p-4 text-center border-b border-slate-100 dark:border-slate-800 min-w-[200px]">
+                      <div className="space-y-1">
+                        <div className="text-xs font-black text-blue-600 uppercase tracking-wider">#{selectedSims.length - idx}</div>
+                        <div className="text-sm font-bold">{sim.pathogenName}</div>
+                        <div className="text-[10px] text-slate-400 font-medium">{sim.foodName}</div>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50 dark:divide-slate-800/50">
+                {/* Risk Metrics */}
+                <tr className="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td colSpan={selectedSims.length + 1} className="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.riskSummary}</td>
+                </tr>
+                <tr>
+                  <td className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-xs font-bold text-slate-600 dark:text-slate-400">{t.infections} ({t.mean})</td>
+                  {selectedSims.map(sim => {
+                    const { min, max } = getMinMax('infected');
+                    const isMax = sim.results.summary.infected === max && min !== max;
+                    const isMin = sim.results.summary.infected === min && min !== max;
+                    return (
+                      <td key={sim.id} className={`p-4 text-center text-sm font-black ${isMax ? 'text-red-500 bg-red-50/30' : isMin ? 'text-emerald-500 bg-emerald-50/30' : ''}`}>
+                        {formatValue(sim.results.summary.infected)}
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-xs font-bold text-slate-600 dark:text-slate-400">{t.deaths} ({t.mean})</td>
+                  {selectedSims.map(sim => {
+                    const { min, max } = getMinMax('deaths');
+                    const isMax = sim.results.summary.deaths === max && min !== max;
+                    const isMin = sim.results.summary.deaths === min && min !== max;
+                    return (
+                      <td key={sim.id} className={`p-4 text-center text-sm font-black ${isMax ? 'text-red-600 bg-red-50/30' : isMin ? 'text-emerald-600 bg-emerald-50/30' : ''}`}>
+                        {formatValue(sim.results.summary.deaths)}
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-xs font-bold text-slate-600 dark:text-slate-400">{t.socialImpact} (USD)</td>
+                  {selectedSims.map((sim, idx) => {
+                    const total = econTotals[idx];
+                    const isMax = total === econMinMax.max && econMinMax.min !== econMinMax.max;
+                    const isMin = total === econMinMax.min && econMinMax.min !== econMinMax.max;
+                    return (
+                      <td key={sim.id} className={`p-4 text-center text-sm font-black ${isMax ? 'text-red-600 bg-red-50/30' : isMin ? 'text-emerald-600 bg-emerald-50/30' : ''}`}>
+                        ${formatValue(total, true)}
+                      </td>
+                    );
+                  })}
+                </tr>
+
+                {/* Key Parameters */}
+                <tr className="bg-slate-50/50 dark:bg-slate-800/20">
+                  <td colSpan={selectedSims.length + 1} className="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.paramImpact}</td>
+                </tr>
+                <tr>
+                  <td className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-xs font-bold text-slate-600 dark:text-slate-400">{t.prevalence}</td>
+                  {selectedSims.map(sim => (
+                    <td key={sim.id} className="p-4 text-center text-sm font-mono">{(sim.params.prevalence * 100).toFixed(1)}%</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-xs font-bold text-slate-600 dark:text-slate-400">{t.initialLoad} (Log)</td>
+                  {selectedSims.map(sim => (
+                    <td key={sim.id} className="p-4 text-center text-sm font-mono">{sim.params.initialLogMean.toFixed(2)}</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-xs font-bold text-slate-600 dark:text-slate-400">{t.process} (Δ Log)</td>
+                  {selectedSims.map(sim => (
+                    <td key={sim.id} className="p-4 text-center text-sm font-mono">{sim.params.processingDeltaLog.toFixed(2)}</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="sticky left-0 bg-white dark:bg-slate-900 z-10 p-4 text-xs font-bold text-slate-600 dark:text-slate-400">{t.prep} (Δ Log)</td>
+                  {selectedSims.map(sim => (
+                    <td key={sim.id} className="p-4 text-center text-sm font-mono">{sim.params.preparationDeltaLog.toFixed(2)}</td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="p-8 border-t border-slate-100 dark:border-slate-800 shrink-0">
+          <button 
+            onClick={onClose}
+            className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-bold hover:scale-[1.01] active:scale-95 transition-all shadow-xl"
+          >
+            {t.close}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ParamInput: React.FC<{
   label: string;
   name: string;
@@ -821,6 +1016,7 @@ const ParamInput: React.FC<{
         value={value} 
         onChange={onChange} 
         step={step}
+        min={min}
         className={`w-full bg-slate-50 dark:bg-slate-800 border ${error ? 'border-red-500 focus:ring-red-500' : 'border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500'} focus:ring-1 rounded-lg p-2 text-sm transition-all outline-none text-slate-900 dark:text-slate-100`}
       />
       {error && (
@@ -862,6 +1058,8 @@ const App: React.FC = () => {
     const saved = localStorage.getItem('probrisk_saved');
     return saved ? JSON.parse(saved) : [];
   });
+  const [selectedSimIds, setSelectedSimIds] = useState<string[]>([]);
+  const [showComparisonModal, setShowComparisonModal] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -956,6 +1154,12 @@ const App: React.FC = () => {
     // We don't strictly need to update selectedFoodId/selectedPathogenId if the params are restored
   };
 
+  const toggleSimulationSelection = (id: string) => {
+    setSelectedSimIds(prev => 
+      prev.includes(id) ? prev.filter(sid => sid !== id) : [...prev, id]
+    );
+  };
+
   const calculateDoseImpact = (p: SimulationParams) => {
     let log = p.initialLogMean;
     log += p.processingDeltaLog;
@@ -974,8 +1178,8 @@ const App: React.FC = () => {
     setTimeout(() => {
       const iterations = params.iterations || 10000;
       const illCases: number[] = [];
-      let totals = { infected: 0, ill: 0, hospitalized: 0, deaths: 0, absence: 0 };
-      let avgLoads = { initial: 0, processing: 0, transport: 0, distribution: 0, preparation: 0 };
+      const totals = { infected: 0, ill: 0, hospitalized: 0, deaths: 0, absence: 0 };
+      const avgLoads = { initial: 0, processing: 0, transport: 0, distribution: 0, preparation: 0 };
       let contaminatedCount = 0;
 
       for (let i = 0; i < iterations; i++) {
@@ -987,10 +1191,28 @@ const App: React.FC = () => {
         avgLoads.processing += currentLog;
         currentLog += params.transportDeltaLog;
         avgLoads.transport += currentLog;
-        currentLog += (params.growthRate * params.growthTime);
+        
+        // Growth with uncertainty
+        let currentGrowthRate = params.growthRate;
+        if (params.growthRateStd > 0) {
+          currentGrowthRate = stats.normal(params.growthRate, params.growthRateStd);
+        }
+        currentLog += (currentGrowthRate * params.growthTime);
+        
         currentLog += params.distributionDeltaLog;
         avgLoads.distribution += currentLog;
-        const inactivationReduction = params.delta > 0 ? -Math.pow(params.inactivationTime / params.delta, params.p) : 0;
+        
+        // Inactivation with uncertainty
+        let currentDelta = params.delta;
+        if (params.deltaStd > 0) {
+          currentDelta = Math.max(0.001, stats.normal(params.delta, params.deltaStd));
+        }
+        let currentP = params.p;
+        if (params.pStd > 0) {
+          currentP = Math.max(0.001, stats.normal(params.p, params.pStd));
+        }
+        
+        const inactivationReduction = currentDelta > 0 ? -Math.pow(params.inactivationTime / currentDelta, currentP) : 0;
         currentLog += params.preparationDeltaLog + inactivationReduction;
         avgLoads.preparation += currentLog;
         const dose = Math.pow(10, currentLog) * params.servingSize;
@@ -1054,7 +1276,7 @@ const App: React.FC = () => {
       });
       setIsSimulating(false);
     }, 400);
-  }, [params, language, t, errors]);
+  }, [params, t, errors]);
 
   const economicSummary = useMemo(() => {
     if (!results) return null;
@@ -1402,9 +1624,12 @@ const App: React.FC = () => {
             <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
               <SectionHeader title={t.exposureStages} icon={<Flame size={14} />} helpText={t.sectionHelpExposure} />
               <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <ParamInput label={t.prevalence} name="prevalence" value={params.prevalence} onChange={handleParamChange} step="0.01" tooltip={t.tooltips.prev} error={errors.prevalence} />
-                  <ParamInput label={t.initialLoad} name="initialLogMean" value={params.initialLogMean} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.load} error={errors.initialLogMean} />
+                  <div className="grid grid-cols-2 gap-4">
+                    <ParamInput label={t.initialLoad} name="initialLogMean" value={params.initialLogMean} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.load} error={errors.initialLogMean} />
+                    <ParamInput label={`${t.initialLoad} (${t.stdDev})`} name="initialLogStd" value={params.initialLogStd} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.load} error={errors.initialLogStd} />
+                  </div>
                 </div>
                 <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-3">{t.logChanges}</p>
@@ -1417,16 +1642,19 @@ const App: React.FC = () => {
                 </div>
                 <div className="p-3 border-t border-slate-100 dark:border-slate-800">
                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-3">{t.kinetics}</p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-5">
                     <ParamInput label={t.growthRate} name="growthRate" value={params.growthRate} onChange={handleParamChange} step="0.01" tooltip={t.tooltips.growthRate} error={errors.growthRate} />
+                    <ParamInput label={`${t.growthRate} (${t.stdDev})`} name="growthRateStd" value={params.growthRateStd} onChange={handleParamChange} step="0.01" tooltip={t.tooltips.growthRate} error={errors.growthRateStd} />
                     <ParamInput label={t.growthTime} name="growthTime" value={params.growthTime} onChange={handleParamChange} step="1" tooltip={t.tooltips.growthTime} error={errors.growthTime} />
                   </div>
                 </div>
                 <div className="p-3 border-t border-slate-100 dark:border-slate-800">
                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-3">{t.inactivationTitle}</p>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-5">
                     <ParamInput label="Delta" name="delta" value={params.delta} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.delta} error={errors.delta} />
+                    <ParamInput label={`Delta (${t.stdDev})`} name="deltaStd" value={params.deltaStd} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.delta} error={errors.deltaStd} />
                     <ParamInput label="P" name="p" value={params.p} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.p} error={errors.p} />
+                    <ParamInput label={`P (${t.stdDev})`} name="pStd" value={params.pStd} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.p} error={errors.pStd} />
                     <ParamInput label="Time" name="inactivationTime" value={params.inactivationTime} onChange={handleParamChange} step="1" tooltip={t.tooltips.inact} error={errors.inactivationTime} />
                   </div>
                 </div>
@@ -1463,6 +1691,13 @@ const App: React.FC = () => {
                     { label: t.infections, val: Math.round(results.summary.infected), color: 'slate', icon: <Users size={16}/>, tip: t.tooltips.inf },
                     { label: t.severe, val: Math.round(results.summary.hospitalized), color: 'orange', icon: <HeartPulse size={16}/>, tip: t.tooltips.sev },
                     { label: t.deaths, val: Math.round(results.summary.deaths), color: 'red', icon: <Scale size={16}/>, tip: t.tooltips.dead },
+                    { 
+                      label: t.fatalityRate, 
+                      val: results.summary.infected > 0 ? ((results.summary.deaths / results.summary.infected) * 100).toFixed(2) + '%' : '0%', 
+                      color: 'rose', 
+                      icon: <ShieldAlert size={16}/>, 
+                      tip: t.tooltips.fatality 
+                    },
                     { label: t.absence, val: Math.round(results.summary.absence), color: 'emerald', icon: <TrendingUp size={16}/>, tip: t.tooltips.abs }
                   ].map(stat => (
                     <div key={stat.label} className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden group">
@@ -1686,9 +1921,9 @@ const App: React.FC = () => {
                         <div className="flex gap-3">
                           <Info size={14} className="text-emerald-500 shrink-0 mt-0.5" />
                           <div className="space-y-1">
-                            <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Model Insight</p>
+                            <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">{t.modelInsightTitle}</p>
                             <p className="text-[10px] text-emerald-600 dark:text-emerald-300 leading-relaxed italic">
-                              The Beta-Poisson model accounts for the probability of a single cell initiating infection, considering host-pathogen variability.
+                              {t.modelInsightDesc}
                             </p>
                           </div>
                         </div>
@@ -1781,12 +2016,22 @@ const App: React.FC = () => {
                       <h3 className="text-lg font-extrabold flex items-center gap-3">
                         <BarChart3 className="text-blue-500" /> {t.comparisonTitle}
                       </h3>
-                      <button 
-                        onClick={clearSavedSimulations}
-                        className="text-[10px] font-bold uppercase text-slate-400 hover:text-red-500 transition-colors"
-                      >
-                        {t.clearSaved}
-                      </button>
+                      <div className="flex items-center gap-4">
+                        {selectedSimIds.length >= 2 && (
+                          <button 
+                            onClick={() => setShowComparisonModal(true)}
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold uppercase text-white bg-blue-600 shadow-lg hover:scale-105 transition-all"
+                          >
+                            <Scale size={14} /> {t.compareSelected}
+                          </button>
+                        )}
+                        <button 
+                          onClick={clearSavedSimulations}
+                          className="text-[10px] font-bold uppercase text-slate-400 hover:text-red-500 transition-colors"
+                        >
+                          {t.clearSaved}
+                        </button>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -1794,8 +2039,14 @@ const App: React.FC = () => {
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t.savedRuns}</p>
                         <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                           {savedSimulations.map((sim) => (
-                            <div key={sim.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800 group">
+                            <div key={sim.id} className={`flex items-center justify-between p-4 rounded-2xl border transition-all group ${selectedSimIds.includes(sim.id) ? 'bg-blue-50/50 border-blue-200 dark:bg-blue-900/10 dark:border-blue-800' : 'bg-slate-50 dark:bg-slate-800/40 border-slate-100 dark:border-slate-800'}`}>
                               <div className="flex items-center gap-4">
+                                <input 
+                                  type="checkbox" 
+                                  checked={selectedSimIds.includes(sim.id)}
+                                  onChange={() => toggleSimulationSelection(sim.id)}
+                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                />
                                 <div className="bg-white dark:bg-slate-800 p-2 rounded-xl shadow-sm">
                                   <Activity size={16} className="text-blue-500" />
                                 </div>
@@ -1857,6 +2108,14 @@ const App: React.FC = () => {
       <footer className="max-w-7xl mx-auto mt-12 pb-8 text-center border-t border-slate-200 dark:border-slate-800 pt-8 no-print">
         <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest flex items-center justify-center gap-2">ProbRisk QMRA <Activity size={10} /> 2025 • High-Resolution Analytics</p>
       </footer>
+
+      <ComparisonModal 
+        isOpen={showComparisonModal}
+        onClose={() => setShowComparisonModal(false)}
+        selectedSims={savedSimulations.filter(s => selectedSimIds.includes(s.id))}
+        t={t}
+        language={language}
+      />
     </div>
   );
 };
