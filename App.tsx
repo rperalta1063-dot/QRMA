@@ -148,6 +148,19 @@ const TRANSLATIONS = {
     developersLabel: "Desarrolladores",
     developersContent: "ProbRisk Team / High-Resolution Analytics",
     close: "Cerrar",
+    faqTitle: "Preguntas Frecuentes (FAQ)",
+    faqExpert: "Para Expertos",
+    faqGeneral: "General",
+    faq: [
+      { q: "¿Qué es QMRA?", a: "La Evaluación Cuantitativa de Riesgos Microbiológicos (QMRA) es un método científico para estimar el riesgo de enfermedad por microorganismos en alimentos o agua.", cat: "general" },
+      { q: "¿Cómo interpreto el 'Impacto Social'?", a: "Es la suma de los costos médicos directos y la pérdida de productividad económica, más el valor estadístico de la vida en caso de fallecimientos.", cat: "general" },
+      { q: "¿Qué significa 'Monte Carlo'?", a: "Es una técnica que repite el cálculo miles de veces usando valores aleatorios para capturar la incertidumbre de la vida real.", cat: "general" },
+      { q: "¿Por qué hay tantos parámetros?", a: "La seguridad alimentaria depende de muchos factores: desde la granja hasta la mesa. Cada parámetro representa una etapa crítica del proceso.", cat: "general" },
+      { q: "¿Cómo se aproxima el modelo Beta-Poisson?", a: "Utilizamos la aproximación estándar de dosis-respuesta de una sola célula, asumiendo que α << β y dosis << β para mayor eficiencia computacional.", cat: "expert" },
+      { q: "¿Cómo se maneja la variabilidad vs incertidumbre?", a: "El modelo actual integra ambas en distribuciones de probabilidad únicas. Futuras versiones permitirán simulaciones de segundo orden (2D Monte Carlo).", cat: "expert" },
+      { q: "¿De dónde vienen los costos económicos (VSL)?", a: "Se basan en estándares de economía de la salud (Valor de una Vida Estadística) ajustados por paridad de poder adquisitivo.", cat: "expert" },
+      { q: "¿Puedo exportar los datos crudos?", a: "Por ahora, la herramienta permite exportar reportes en PDF y compartir el estado de la simulación mediante URLs codificadas.", cat: "expert" }
+    ],
     hospRateLabel: "Tasa Hospitalización",
     mortalityRateLabel: "Tasa Mortalidad",
     absenceDaysLabel: "Días Ausentismo",
@@ -156,6 +169,10 @@ const TRANSLATIONS = {
     countLabel: "Frecuencia",
     logLoadLabel: "Carga (Log10)",
     modelInsightTitle: "Perspectiva del Modelo",
+    modelComparison: "Comparativa de Modelos",
+    difference: "Diferencia",
+    significantDiff: "Diferencia Significativa",
+    divergenceWarning: "Los modelos divergen significativamente en este rango de parámetros.",
     modelInsightDesc: "El modelo Beta-Poisson considera la probabilidad de que una sola célula inicie la infección, teniendo en cuenta la variabilidad entre el huésped y el patógeno.",
     errorRequired: "Requerido",
     errorRange: "Rango: {min} - {max}",
@@ -328,6 +345,19 @@ const TRANSLATIONS = {
     developersLabel: "Developers",
     developersContent: "ProbRisk Team / High-Resolution Analytics",
     close: "Close",
+    faqTitle: "Frequently Asked Questions (FAQ)",
+    faqExpert: "For Experts",
+    faqGeneral: "General",
+    faq: [
+      { q: "What is QMRA?", a: "Quantitative Microbiological Risk Assessment (QMRA) is a scientific method used to estimate the risk of illness from microorganisms in food or water.", cat: "general" },
+      { q: "How do I interpret 'Social Impact'?", a: "It is the sum of direct medical costs and economic productivity loss, plus the statistical value of life in case of fatalities.", cat: "general" },
+      { q: "What does 'Monte Carlo' mean?", a: "It is a technique that repeats the calculation thousands of times using random values to capture real-world uncertainty.", cat: "general" },
+      { q: "Why are there so many parameters?", a: "Food safety depends on many factors: from farm to table. Each parameter represents a critical stage of the process.", cat: "general" },
+      { q: "How is the Beta-Poisson model approximated?", a: "We use the standard single-hit dose-response approximation, assuming α << β and dose << β for computational efficiency.", cat: "expert" },
+      { q: "How is variability vs uncertainty handled?", a: "The current model integrates both into unique probability distributions. Future versions will allow second-order simulations (2D Monte Carlo).", cat: "expert" },
+      { q: "Where do the economic costs (VSL) come from?", a: "They are based on health economics standards (Value of a Statistical Life) adjusted by purchasing power parity.", cat: "expert" },
+      { q: "Can I export the raw data?", a: "Currently, the tool allows exporting PDF reports and sharing the simulation state via encoded URLs.", cat: "expert" }
+    ],
     hospRateLabel: "Hosp. Rate",
     mortalityRateLabel: "Mortality Rate",
     absenceDaysLabel: "Absentee Days",
@@ -336,6 +366,10 @@ const TRANSLATIONS = {
     countLabel: "Frequency",
     logLoadLabel: "Load (Log10)",
     modelInsightTitle: "Model Insight",
+    modelComparison: "Model Comparison",
+    difference: "Difference",
+    significantDiff: "Significant Difference",
+    divergenceWarning: "The models diverge significantly in this parameter range.",
     modelInsightDesc: "The Beta-Poisson model accounts for the probability of a single cell initiating infection, considering host-pathogen variability.",
     errorRequired: "Required",
     errorRange: "Range: {min} - {max}",
@@ -508,6 +542,19 @@ const TRANSLATIONS = {
     developersLabel: "Développeurs",
     developersContent: "ProbRisk Team / High-Resolution Analytics",
     close: "Fermer",
+    faqTitle: "Foire Aux Questions (FAQ)",
+    faqExpert: "Pour Experts",
+    faqGeneral: "Général",
+    faq: [
+      { q: "Qu'est-ce que la QMRA ?", a: "L'Évaluation Quantitative des Risques Microbiologiques (QMRA) est une méthode scientifique utilisée pour estimer le risque de maladie lié aux microorganismes dans les aliments ou l'eau.", cat: "general" },
+      { q: "Comment interpréter l'Impact Social ?", a: "C'est la somme des coûts médicaux directs et de la perte de productivité économique, plus la valeur statistique de la vie en cas de décès.", cat: "general" },
+      { q: "Que signifie 'Monte Carlo' ?", a: "C'est une technique qui répète le calcul des milliers de fois en utilisant des valeurs aléatoires pour capturer l'incertitude du monde réel.", cat: "general" },
+      { q: "Pourquoi y a-t-il tant de paramètres ?", a: "La sécurité alimentaire dépend de nombreux facteurs : de la ferme à la table. Chaque paramètre représente une étape critique du processus.", cat: "general" },
+      { q: "Comment le modèle Bêta-Poisson est-il approximé ?", a: "Nous utilisons l'approximation standard dose-réponse à un seul coup, en supposant α << β et dose << β pour l'efficacité de calcul.", cat: "expert" },
+      { q: "Comment la variabilité vs l'incertitude est-elle gérée ?", a: "Le modèle actuel intègre les deux dans des distributions de probabilité uniques. Les versions futures permettront le Monte Carlo 2D.", cat: "expert" },
+      { q: "D'où viennent les coûts économiques (VSL) ?", a: "Ils sont basés sur les normes d'économie de la santé (Valeur d'une Vie Statistique) ajustées par parité de pouvoir d'achat.", cat: "expert" },
+      { q: "Puis-je exporter les données brutes ?", a: "Pour l'instant, l'outil permet d'exporter des rapports PDF et de partager l'état de la simulation via des URL encodées.", cat: "expert" }
+    ],
     hospRateLabel: "Taux Hosp.",
     mortalityRateLabel: "Taux Mortalité",
     absenceDaysLabel: "Jours d'Absence",
@@ -516,6 +563,10 @@ const TRANSLATIONS = {
     countLabel: "Fréquence",
     logLoadLabel: "Charge (Log10)",
     modelInsightTitle: "Aperçu du Modèle",
+    modelComparison: "Comparaison de Modèles",
+    difference: "Différence",
+    significantDiff: "Différence Significative",
+    divergenceWarning: "Les modèles divergent de manière significative dans cette plage de paramètres.",
     modelInsightDesc: "Le modèle Beta-Poisson prend en compte la probabilité qu'une seule cellule déclenche une infection, en considérant la variabilité hôte-pathogène.",
     errorRequired: "Obligatoire",
     errorRange: "Plage: {min} - {max}",
@@ -1031,6 +1082,81 @@ const ComparisonModal: React.FC<{
   );
 };
 
+const FAQModal: React.FC<{ isOpen: boolean; onClose: () => void; t: any }> = ({ isOpen, onClose, t }) => {
+  const [activeTab, setActiveTab] = useState<'general' | 'expert'>('general');
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+
+  if (!isOpen) return null;
+
+  const filteredFaqs = t.faq.filter((f: any) => f.cat === activeTab);
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-300">
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white dark:bg-slate-900 w-full max-w-2xl max-h-[85vh] rounded-[3rem] shadow-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-800">
+        <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
+          <div className="flex items-center gap-4">
+            <div className="bg-blue-600 p-3 rounded-2xl text-white shadow-lg shadow-blue-600/20">
+              <HelpCircle size={24} />
+            </div>
+            <div>
+              <h2 className="text-2xl font-black">{t.faqTitle}</h2>
+              <p className="text-slate-500 font-medium text-sm">{t.subtitle}</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-400">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="p-4 bg-slate-100/50 dark:bg-slate-800/30 flex gap-2">
+          <button 
+            onClick={() => { setActiveTab('general'); setExpandedIdx(null); }}
+            className={`flex-1 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all ${activeTab === 'general' ? 'bg-white dark:bg-slate-700 shadow-md text-blue-600' : 'text-slate-400 hover:text-slate-600'}`}
+          >
+            {t.faqGeneral}
+          </button>
+          <button 
+            onClick={() => { setActiveTab('expert'); setExpandedIdx(null); }}
+            className={`flex-1 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all ${activeTab === 'expert' ? 'bg-white dark:bg-slate-700 shadow-md text-blue-600' : 'text-slate-400 hover:text-slate-600'}`}
+          >
+            {t.faqExpert}
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-auto p-8 space-y-4 custom-scrollbar">
+          {filteredFaqs.map((item: any, idx: number) => (
+            <div key={idx} className="border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden transition-all duration-300">
+              <button 
+                onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
+                className="w-full p-6 text-left flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              >
+                <span className="font-bold text-slate-700 dark:text-slate-200 pr-4">{item.q}</span>
+                <div className={`transition-transform duration-300 ${expandedIdx === idx ? 'rotate-180' : ''}`}>
+                  <Zap size={16} className={expandedIdx === idx ? 'text-blue-600' : 'text-slate-300'} />
+                </div>
+              </button>
+              {expandedIdx === idx && (
+                <div className="px-6 pb-6 animate-in slide-in-from-top-2 duration-300">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    {item.a}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="p-8 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
+          <button onClick={onClose} className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-bold hover:scale-[1.01] active:scale-95 transition-all shadow-xl">
+            {t.close}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ParamInput: React.FC<{
   label: string;
   name: string;
@@ -1112,6 +1238,7 @@ const App: React.FC = () => {
   });
 
   const [showAbout, setShowAbout] = useState(false);
+  const [showFAQ, setShowFAQ] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
 
   const t = TRANSLATIONS[language];
@@ -1383,11 +1510,20 @@ const App: React.FC = () => {
     for (let i = 0; i <= steps; i++) {
       const logDose = (10 / steps) * i;
       const doseValue = Math.pow(10, logDose);
+      
+      // Current selected model probability
       const pInf = getInfectionProbability(doseValue, params);
       const pIll = pInf * params.illnessProb;
+      
+      // Exponential approximation (k = alpha/beta)
+      const k = params.alpha / params.beta;
+      const pInfExp = stats.exponentialInfProb(doseValue, k);
+      const pIllExp = pInfExp * params.illnessProb;
+
       data.push({ 
         dose: doseValue.toExponential(2), 
         prob: parseFloat(pIll.toFixed(6)),
+        probExp: parseFloat(pIllExp.toFixed(6)),
         logDose: logDose.toFixed(1)
       });
     }
@@ -1543,6 +1679,9 @@ const App: React.FC = () => {
         </div>
       )}
 
+      {/* FAQ Modal */}
+      <FAQModal isOpen={showFAQ} onClose={() => setShowFAQ(false)} t={t} />
+
       <div className="max-w-7xl mx-auto">
         <header className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6 no-print">
           <div className="flex items-center gap-4">
@@ -1561,6 +1700,13 @@ const App: React.FC = () => {
               onClick={() => setShowGuide(!showGuide)}
               className={`p-3 rounded-2xl border transition-all active:scale-95 ${showGuide ? 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-900/20 dark:border-blue-800' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400 hover:text-blue-500'}`}
               title={t.guideTitle}
+            >
+              <Zap size={20} />
+            </button>
+            <button 
+              onClick={() => setShowFAQ(true)}
+              className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-transform active:scale-95 text-slate-400 hover:text-blue-500"
+              title={t.faqTitle}
             >
               <HelpCircle size={20} />
             </button>
@@ -1996,15 +2142,78 @@ const App: React.FC = () => {
                             <Line 
                               type="monotone" 
                               dataKey="prob" 
-                              name={t.probIllnessLabel}
+                              name={params.doseResponseModel === DoseResponseModel.BETA_POISSON ? "Beta-Poisson" : t.probIllnessLabel}
                               stroke="#10b981" 
                               strokeWidth={4} 
                               dot={false} 
                               animationDuration={1500}
                             />
+                            {params.doseResponseModel === DoseResponseModel.BETA_POISSON && (
+                              <Line 
+                                type="monotone" 
+                                dataKey="probExp" 
+                                name={`${t.exponential} (Approx)`}
+                                stroke="#3b82f6" 
+                                strokeWidth={2} 
+                                strokeDasharray="5 5"
+                                dot={false} 
+                                animationDuration={1500}
+                              />
+                            )}
                           </LineChart>
                         </ResponsiveContainer>
                       </div>
+
+                      {/* Comparison Table */}
+                      {params.doseResponseModel === DoseResponseModel.BETA_POISSON && (
+                        <div className="mt-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
+                          <div className="px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <h5 className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                              <Calculator size={12} /> {t.modelComparison}
+                            </h5>
+                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">k = &alpha;/&beta; = {(params.alpha/params.beta).toExponential(2)}</span>
+                          </div>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-[10px]">
+                              <thead>
+                                <tr className="text-left text-slate-400 font-bold border-b border-slate-100 dark:border-slate-800">
+                                  <th className="px-4 py-2">{t.doseLabel} (CFU)</th>
+                                  <th className="px-4 py-2 text-right">Beta-Poisson</th>
+                                  <th className="px-4 py-2 text-right">{t.exponential} (Approx)</th>
+                                  <th className="px-4 py-2 text-right">{t.difference}</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                {[1, 10, 100, 1000, 10000].map(dose => {
+                                  const pInf = getInfectionProbability(dose, params);
+                                  const k = params.alpha / params.beta;
+                                  const pInfExp = stats.exponentialInfProb(dose, k);
+                                  const diff = Math.abs(pInf - pInfExp);
+                                  return (
+                                    <tr key={dose} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                      <td className="px-4 py-2 font-mono text-slate-500">{dose.toExponential(0)}</td>
+                                      <td className="px-4 py-2 text-right font-bold text-emerald-600 dark:text-emerald-400">{pInf.toFixed(4)}</td>
+                                      <td className="px-4 py-2 text-right font-bold text-blue-600 dark:text-blue-400">{pInfExp.toFixed(4)}</td>
+                                      <td className={`px-4 py-2 text-right font-mono ${diff > 0.01 ? 'text-amber-600 font-black' : 'text-slate-400'}`}>
+                                        {(diff * 100).toFixed(2)}%
+                                        {diff > 0.01 && <span className="ml-1 text-[8px] uppercase">!</span>}
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                          {Math.max(...[1, 10, 100, 1000, 10000].map(d => Math.abs(getInfectionProbability(d, params) - stats.exponentialInfProb(d, params.alpha/params.beta)))) > 0.05 && (
+                            <div className="p-3 bg-amber-50 dark:bg-amber-900/10 border-t border-amber-100 dark:border-amber-900/20 flex gap-2 items-center">
+                              <AlertCircle size={10} className="text-amber-500" />
+                              <p className="text-[9px] text-amber-700 dark:text-amber-400 font-medium italic">
+                                {t.significantDiff}: {t.divergenceWarning}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     <div className="xl:col-span-4 space-y-6">
