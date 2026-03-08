@@ -9,7 +9,7 @@ import {
   HelpCircle, Moon, Sun, Sigma, Clock, Flame, DollarSign, Info, ShoppingBag, UtensilsCrossed, Factory, Users, TrendingUp,
   Trash2, FileDown, ShieldAlert, HeartPulse, Scale, Share2, Check, X, Zap, AlertCircle, Banknote, Microscope as MicroscopeIcon, Calculator
 } from 'lucide-react';
-import { SimulationParams, SimulationResults, PathogenProfile, FoodProfile, SavedSimulation } from './types';
+import { SimulationParams, SimulationResults, PathogenProfile, FoodProfile, SavedSimulation, DoseResponseModel } from './types';
 import { stats } from './services/statsService';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -46,7 +46,15 @@ const TRANSLATIONS = {
     inactivationSummary: "Resumen de Reducción Térmica",
     totalReduction: "Reducción Total Log10",
     formulaTitle: "Modelo Matemático",
-    doseResponseTitle: "CURVA DOSIS-RESPUESTA (BETA-POISSON)",
+    doseResponseTitle: "CURVA DOSIS-RESPUESTA",
+    doseResponseModel: "Modelo Dosis-Respuesta",
+    exponential: "Exponencial",
+    betaPoisson: "Beta-Poisson (Aprox)",
+    logLogistic: "Log-Logístico",
+    logNormal: "Log-Normal",
+    kLabel: "Parámetro k",
+    d50Label: "Dosis Media (D50)",
+    drSigmaLabel: "Sigma (Log-Normal)",
     doseLabel: "Dosis (CFU)",
     probIllnessLabel: "Prob. Enfermedad",
     econParamsTitle: "Parámetros Económicos (USD)",
@@ -88,6 +96,7 @@ const TRANSLATIONS = {
     timeApplied: "T. Aplicado",
     timeMin: "Tiempo (min)",
     reductionLog: "Reducción (Log)",
+    intermediateValue: "(t/δ)ᵖ",
     socialImpactDesc: "Suma de costos directos (salud) e indirectos (productividad).",
     sanitaryDesc: "Carga por hospitalización y consultas.",
     prodDesc: "Ausentismo laboral y pérdida de productividad.",
@@ -182,7 +191,10 @@ const TRANSLATIONS = {
       growthRate: "Velocidad de crecimiento del patógeno (Log10/h).",
       growthTime: "Duración del tiempo de abuso térmico o almacenamiento.",
       delta: "Tiempo necesario para la primera reducción logarítmica.",
-      p: "Parámetro de forma de la curva de inactivación."
+      p: "Parámetro de forma de la curva de inactivación.",
+      k: "Parámetro de tasa del modelo exponencial.",
+      d50: "Dosis que produce una probabilidad de infección del 50%.",
+      drSigma: "Desviación estándar del logaritmo de la dosis en el modelo Log-Normal."
     }
   },
   en: {
@@ -214,7 +226,15 @@ const TRANSLATIONS = {
     inactivationSummary: "Thermal Reduction Summary",
     totalReduction: "Total Reduction Log10",
     formulaTitle: "Mathematical Model",
-    doseResponseTitle: "DOSE-RESPONSE CURVE (BETA-POISSON)",
+    doseResponseTitle: "DOSE-RESPONSE CURVE",
+    doseResponseModel: "Dose-Response Model",
+    exponential: "Exponential",
+    betaPoisson: "Beta-Poisson (Approx)",
+    logLogistic: "Log-Logistic",
+    logNormal: "Log-Normal",
+    kLabel: "k Parameter",
+    d50Label: "Median Dose (D50)",
+    drSigmaLabel: "Sigma (Log-Normal)",
     doseLabel: "Dose (CFU)",
     probIllnessLabel: "Prob. of Illness",
     econParamsTitle: "Economic Parameters (USD)",
@@ -256,6 +276,7 @@ const TRANSLATIONS = {
     timeApplied: "T. Applied",
     timeMin: "Time (min)",
     reductionLog: "Reduction (Log)",
+    intermediateValue: "(t/δ)ᵖ",
     socialImpactDesc: "Sum of direct (health) and indirect (productivity) costs.",
     sanitaryDesc: "Burden from hospitalizations and consultations.",
     prodDesc: "Work absenteeism and lost labor productivity.",
@@ -350,7 +371,10 @@ const TRANSLATIONS = {
       growthRate: "Pathogen growth velocity (Log10/h).",
       growthTime: "Duration of thermal abuse or storage time.",
       delta: "Time required for the first log-reduction.",
-      p: "Shape parameter of the inactivation curve."
+      p: "Shape parameter of the inactivation curve.",
+      k: "Rate parameter for the exponential model.",
+      d50: "Dose that results in a 50% probability of infection.",
+      drSigma: "Standard deviation of the log-dose in the Log-Normal model."
     }
   },
   fr: {
@@ -382,7 +406,15 @@ const TRANSLATIONS = {
     inactivationSummary: "Résumé de la Réduction Thermique",
     totalReduction: "Réduction Totale Log10",
     formulaTitle: "Modèle Mathématique",
-    doseResponseTitle: "COURBE DOSE-RÉPONSE (BETA-POISSON)",
+    doseResponseTitle: "COURBE DOSE-RÉPONSE",
+    doseResponseModel: "Modèle Dose-Réponse",
+    exponential: "Exponentiel",
+    betaPoisson: "Bêta-Poisson (Approx)",
+    logLogistic: "Log-Logistique",
+    logNormal: "Log-Normal",
+    kLabel: "Paramètre k",
+    d50Label: "Dose Médiane (D50)",
+    drSigmaLabel: "Sigma (Log-Normal)",
     doseLabel: "Dose (UFC)",
     probIllnessLabel: "Prob. Maladie",
     econParamsTitle: "Paramètres Économiques (USD)",
@@ -424,6 +456,7 @@ const TRANSLATIONS = {
     timeApplied: "T. Appliqué",
     timeMin: "Temps (min)",
     reductionLog: "Réduction (Log)",
+    intermediateValue: "(t/δ)ᵖ",
     socialImpactDesc: "Somme des coûts directs (santé) et indirects (productivité).",
     sanitaryDesc: "Charge liée aux hospitalisations et consultations.",
     prodDesc: "Absentéisme au travail et perte de productivité.",
@@ -518,7 +551,10 @@ const TRANSLATIONS = {
       growthRate: "Vitesse de croissance du pathogène (Log10/h).",
       growthTime: "Durée de l'abus thermique ou du stockage.",
       delta: "Temps nécessaire pour la première réduction logarithmique.",
-      p: "Paramètre de forme de la courbe d'inactivation."
+      p: "Paramètre de forme de la courbe d'inactivation.",
+      k: "Paramètre de taux pour le modèle exponentiel.",
+      d50: "Dose produisant une probabilité d'infection de 50%.",
+      drSigma: "Écart type du log-dose dans le modèle Log-Normal."
     }
   }
 };
@@ -700,16 +736,16 @@ const FOOD_DATA = {
 };
 
 const PATHOGEN_PROFILES: PathogenProfile[] = [
-  { id: 'salmonella', name: 'Salmonella', description: '', associatedFoods: ['poultry', 'beef', 'egg', 'rte'], params: { alpha: 0.13, beta: 51.45, illnessProb: 0.3, hospRate: 0.22, mortalityRate: 0.003, processingDeltaLog: -2.5, growthRate: 0.08, growthTime: 12, absenceDays: 4 } },
-  { id: 'listeria', name: 'Listeria', description: '', associatedFoods: ['leafy', 'milk', 'fish', 'rte'], params: { alpha: 0.1, beta: 100000000, illnessProb: 0.15, hospRate: 0.93, mortalityRate: 0.18, processingDeltaLog: -5.0, growthRate: 0.015, growthTime: 48, distributionDeltaLog: 1.5, absenceDays: 20 } },
-  { id: 'ecoli', name: 'E. coli', description: '', associatedFoods: ['leafy', 'beef', 'rte'], params: { alpha: 0.15, beta: 40, illnessProb: 0.45, hospRate: 0.26, mortalityRate: 0.01, processingDeltaLog: -3.5, growthRate: 0.04, growthTime: 8, absenceDays: 7 } },
-  { id: 'campylobacter', name: 'Campylobacter', description: '', associatedFoods: ['poultry', 'milk'], params: { alpha: 0.145, beta: 7.59, illnessProb: 0.4, hospRate: 0.1, mortalityRate: 0.0001, processingDeltaLog: -2.0, growthRate: 0.01, growthTime: 6, absenceDays: 5 } },
-  { id: 'norovirus', name: 'Norovirus', description: '', associatedFoods: ['leafy', 'fish', 'rte'], params: { alpha: 0.04, beta: 0.05, illnessProb: 0.6, hospRate: 0.01, mortalityRate: 0.00005, processingDeltaLog: -1.0, growthRate: 0.0, growthTime: 0, absenceDays: 2 } },
-  { id: 'staph', name: 'Staph. aureus', description: '', associatedFoods: ['milk', 'poultry', 'rte'], params: { alpha: 0.05, beta: 100000, illnessProb: 0.8, hospRate: 0.05, mortalityRate: 0.0001, processingDeltaLog: -2.0, growthRate: 0.12, growthTime: 12, absenceDays: 1 } },
-  { id: 'vibrio', name: 'Vibrio', description: '', associatedFoods: ['fish'], params: { alpha: 0.18, beta: 100000000, illnessProb: 0.5, hospRate: 0.37, mortalityRate: 0.03, processingDeltaLog: -1.0, growthRate: 0.18, growthTime: 8, absenceDays: 3 } },
-  { id: 'vibrio_cholerae', name: 'Vibrio cholerae', description: '', associatedFoods: ['fish', 'rte'], params: { alpha: 0.2, beta: 1000000, illnessProb: 0.7, hospRate: 0.6, mortalityRate: 0.01, processingDeltaLog: -1.0, growthRate: 0.25, growthTime: 6, absenceDays: 10 } },
-  { id: 'vibrio_vulnificus', name: 'Vibrio vulnificus', description: '', associatedFoods: ['fish'], params: { alpha: 0.2, beta: 100000, illnessProb: 0.85, hospRate: 0.95, mortalityRate: 0.35, processingDeltaLog: -1.0, growthRate: 0.22, growthTime: 8, absenceDays: 30 } },
-  { id: 'shigella', name: 'Shigella spp.', description: '', associatedFoods: ['leafy', 'rte'], params: { alpha: 0.12, beta: 10, illnessProb: 0.8, hospRate: 0.20, mortalityRate: 0.006, processingDeltaLog: -0.5, growthRate: 0.06, growthTime: 12, absenceDays: 5 } }
+  { id: 'salmonella', name: 'Salmonella', description: '', associatedFoods: ['poultry', 'beef', 'egg', 'rte'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.13, beta: 51.45, k: 0.01, d50: 100, drSigma: 0.5, illnessProb: 0.3, hospRate: 0.22, mortalityRate: 0.003, processingDeltaLog: -2.5, growthRate: 0.08, growthTime: 12, absenceDays: 4 } },
+  { id: 'listeria', name: 'Listeria', description: '', associatedFoods: ['leafy', 'milk', 'fish', 'rte'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.1, beta: 100000000, k: 0.00000001, d50: 1000000, drSigma: 1.0, illnessProb: 0.15, hospRate: 0.93, mortalityRate: 0.18, processingDeltaLog: -5.0, growthRate: 0.015, growthTime: 48, distributionDeltaLog: 1.5, absenceDays: 20 } },
+  { id: 'ecoli', name: 'E. coli', description: '', associatedFoods: ['leafy', 'beef', 'rte'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.15, beta: 40, k: 0.02, d50: 50, drSigma: 0.4, illnessProb: 0.45, hospRate: 0.26, mortalityRate: 0.01, processingDeltaLog: -3.5, growthRate: 0.04, growthTime: 8, absenceDays: 7 } },
+  { id: 'campylobacter', name: 'Campylobacter', description: '', associatedFoods: ['poultry', 'milk'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.145, beta: 7.59, k: 0.05, d50: 10, drSigma: 0.3, illnessProb: 0.4, hospRate: 0.1, mortalityRate: 0.0001, processingDeltaLog: -2.0, growthRate: 0.01, growthTime: 6, absenceDays: 5 } },
+  { id: 'norovirus', name: 'Norovirus', description: '', associatedFoods: ['leafy', 'fish', 'rte'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.04, beta: 0.05, k: 0.5, d50: 1, drSigma: 0.2, illnessProb: 0.6, hospRate: 0.01, mortalityRate: 0.00005, processingDeltaLog: -1.0, growthRate: 0.0, growthTime: 0, absenceDays: 2 } },
+  { id: 'staph', name: 'Staph. aureus', description: '', associatedFoods: ['milk', 'poultry', 'rte'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.05, beta: 100000, k: 0.00001, d50: 50000, drSigma: 0.8, illnessProb: 0.8, hospRate: 0.05, mortalityRate: 0.0001, processingDeltaLog: -2.0, growthRate: 0.12, growthTime: 12, absenceDays: 1 } },
+  { id: 'vibrio', name: 'Vibrio', description: '', associatedFoods: ['fish'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.18, beta: 100000000, k: 0.00000001, d50: 1000000, drSigma: 1.0, illnessProb: 0.5, hospRate: 0.37, mortalityRate: 0.03, processingDeltaLog: -1.0, growthRate: 0.18, growthTime: 8, absenceDays: 3 } },
+  { id: 'vibrio_cholerae', name: 'Vibrio cholerae', description: '', associatedFoods: ['fish', 'rte'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.2, beta: 1000000, k: 0.000001, d50: 10000, drSigma: 0.6, illnessProb: 0.7, hospRate: 0.6, mortalityRate: 0.01, processingDeltaLog: -1.0, growthRate: 0.25, growthTime: 6, absenceDays: 10 } },
+  { id: 'vibrio_vulnificus', name: 'Vibrio vulnificus', description: '', associatedFoods: ['fish'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.2, beta: 100000, k: 0.00001, d50: 1000, drSigma: 0.5, illnessProb: 0.85, hospRate: 0.95, mortalityRate: 0.35, processingDeltaLog: -1.0, growthRate: 0.22, growthTime: 8, absenceDays: 30 } },
+  { id: 'shigella', name: 'Shigella spp.', description: '', associatedFoods: ['leafy', 'rte'], params: { doseResponseModel: DoseResponseModel.BETA_POISSON, alpha: 0.12, beta: 10, k: 0.05, d50: 10, drSigma: 0.3, illnessProb: 0.8, hospRate: 0.20, mortalityRate: 0.006, processingDeltaLog: -0.5, growthRate: 0.06, growthTime: 12, absenceDays: 5 } }
 ];
 
 const FOOD_PROFILES: FoodProfile[] = [
@@ -743,6 +779,9 @@ const VALIDATION_RULES: Record<string, { min: number, max: number }> = {
   inactivationTime: { min: 0, max: 1000 },
   alpha: { min: 0.0001, max: 1000 },
   beta: { min: 0.0001, max: 1000000000 },
+  k: { min: 0.0000001, max: 100 },
+  d50: { min: 0.1, max: 1000000000 },
+  drSigma: { min: 0.1, max: 10 },
   illnessProb: { min: 0, max: 1 },
   hospRate: { min: 0, max: 1 },
   mortalityRate: { min: 0, max: 1 },
@@ -759,7 +798,9 @@ const DEFAULT_PARAMS: SimulationParams = {
   iterations: 10000, processingDeltaLog: -3.0, transportDeltaLog: 0.5,
   distributionDeltaLog: 0.2, preparationDeltaLog: -2.0, growthRate: 0.05, growthRateStd: 0,
   growthTime: 12, delta: 5, deltaStd: 0, p: 1.2, pStd: 0, inactivationTime: 10,
-  alpha: 0.25, beta: 1500, illnessProb: 0.5, hospRate: 0.22,
+  doseResponseModel: DoseResponseModel.BETA_POISSON,
+  alpha: 0.25, beta: 1500, k: 0.01, d50: 1000, drSigma: 0.5,
+  illnessProb: 0.5, hospRate: 0.22,
   mortalityRate: 0.005, absenceDays: 4.5,
   costHosp: 15000, costAmb: 500, costAbsence: 200, costDeath: 2000000
 };
@@ -1033,6 +1074,32 @@ interface SensitivityItem {
   impact: number;
 }
 
+const getInfectionProbability = (dose: number, p: SimulationParams) => {
+  switch (p.doseResponseModel) {
+    case DoseResponseModel.EXPONENTIAL:
+      return stats.exponentialInfProb(dose, p.k);
+    case DoseResponseModel.LOG_LOGISTIC:
+      return stats.logLogisticInfProb(dose, p.d50, p.beta);
+    case DoseResponseModel.LOG_NORMAL:
+      return stats.logNormalInfProb(dose, p.d50, p.drSigma);
+    case DoseResponseModel.BETA_POISSON:
+    default:
+      return stats.betaPoissonInfProb(dose, p.alpha, p.beta);
+  }
+};
+
+const calculateDoseImpact = (p: SimulationParams) => {
+  let log = p.initialLogMean;
+  log += p.processingDeltaLog;
+  log += p.transportDeltaLog;
+  log += (p.growthRate * p.growthTime);
+  log += p.distributionDeltaLog;
+  const inact = p.delta > 0 ? -Math.pow(p.inactivationTime / p.delta, p.p) : 0;
+  log += p.preparationDeltaLog + inact;
+  const dose = Math.pow(10, log) * p.servingSize;
+  return getInfectionProbability(dose, p) * p.prevalence;
+};
+
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('probrisk_theme');
@@ -1160,18 +1227,6 @@ const App: React.FC = () => {
     );
   };
 
-  const calculateDoseImpact = (p: SimulationParams) => {
-    let log = p.initialLogMean;
-    log += p.processingDeltaLog;
-    log += p.transportDeltaLog;
-    log += (p.growthRate * p.growthTime);
-    log += p.distributionDeltaLog;
-    const inact = p.delta > 0 ? -Math.pow(p.inactivationTime / p.delta, p.p) : 0;
-    log += p.preparationDeltaLog + inact;
-    const dose = Math.pow(10, log) * p.servingSize;
-    return stats.betaPoissonInfProb(dose, p.alpha, p.beta) * p.prevalence;
-  };
-
   const runSimulation = useCallback(() => {
     if (Object.keys(errors).length > 0) return;
     setIsSimulating(true);
@@ -1216,7 +1271,7 @@ const App: React.FC = () => {
         currentLog += params.preparationDeltaLog + inactivationReduction;
         avgLoads.preparation += currentLog;
         const dose = Math.pow(10, currentLog) * params.servingSize;
-        const pInf = stats.betaPoissonInfProb(dose, params.alpha, params.beta);
+        const pInf = getInfectionProbability(dose, params);
         const infectedCount = pInf * params.populationSize;
         const illCount = infectedCount * params.illnessProb;
         totals.infected += infectedCount; totals.ill += illCount;
@@ -1315,8 +1370,9 @@ const App: React.FC = () => {
     const data = [];
     for (let i = 0; i <= steps; i++) {
       const t = (params.inactivationTime / steps) * i;
-      const logReduction = -Math.pow(t / params.delta, params.p);
-      data.push({ t, logReduction });
+      const intermediate = Math.pow(t / params.delta, params.p);
+      const logReduction = -intermediate;
+      data.push({ t, intermediate, logReduction });
     }
     return data;
   }, [params.delta, params.p, params.inactivationTime]);
@@ -1327,7 +1383,7 @@ const App: React.FC = () => {
     for (let i = 0; i <= steps; i++) {
       const logDose = (10 / steps) * i;
       const doseValue = Math.pow(10, logDose);
-      const pInf = stats.betaPoissonInfProb(doseValue, params.alpha, params.beta);
+      const pInf = getInfectionProbability(doseValue, params);
       const pIll = pInf * params.illnessProb;
       data.push({ 
         dose: doseValue.toExponential(2), 
@@ -1336,7 +1392,7 @@ const App: React.FC = () => {
       });
     }
     return data;
-  }, [params.alpha, params.beta, params.illnessProb]);
+  }, [params]);
 
   const formatEconomicValue = (val: number | undefined) => {
     if (val === undefined) return '0.00';
@@ -1353,8 +1409,14 @@ const App: React.FC = () => {
     return "";
   };
 
-  const handleParamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleParamChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    
+    if (name === 'doseResponseModel') {
+      setParams(prev => ({ ...prev, [name]: value as DoseResponseModel }));
+      return;
+    }
+
     const numVal = parseFloat(value);
     const errorMsg = validateField(name, numVal);
     
@@ -1594,10 +1656,51 @@ const App: React.FC = () => {
                   <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-2 border-t border-blue-100/50 dark:border-blue-800/50 pb-2">
                     <ParamInput label={t.hospRateLabel} name="hospRate" value={params.hospRate} onChange={handleParamChange} step="0.01" tooltip={t.tooltips.sev} error={errors.hospRate} />
                     <ParamInput label={t.mortalityRateLabel} name="mortalityRate" value={params.mortalityRate} onChange={handleParamChange} step="0.001" tooltip={t.tooltips.dead} error={errors.mortalityRate} />
-                    <ParamInput label="Alpha (α)" name="alpha" value={params.alpha} onChange={handleParamChange} step="0.001" tooltip={t.tooltips.alpha} error={errors.alpha} />
-                    <ParamInput label="Beta (β)" name="beta" value={params.beta} onChange={handleParamChange} step="1" tooltip={t.tooltips.beta} error={errors.beta} />
                     <div className="col-span-2">
                        <ParamInput label={t.absenceDaysLabel} name="absenceDays" value={params.absenceDays} onChange={handleParamChange} step="0.5" tooltip={t.tooltips.abs} error={errors.absenceDays} />
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 pt-2 border-t border-blue-100/50 dark:border-blue-800/50">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-500 uppercase">{t.doseResponseModel}</label>
+                      <select 
+                        name="doseResponseModel"
+                        value={params.doseResponseModel} 
+                        onChange={handleParamChange} 
+                        className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs outline-none text-slate-900 dark:text-slate-100"
+                      >
+                        <option value={DoseResponseModel.BETA_POISSON}>{t.betaPoisson}</option>
+                        <option value={DoseResponseModel.EXPONENTIAL}>{t.exponential}</option>
+                        <option value={DoseResponseModel.LOG_LOGISTIC}>{t.logLogistic}</option>
+                        <option value={DoseResponseModel.LOG_NORMAL}>{t.logNormal}</option>
+                      </select>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                      {params.doseResponseModel === DoseResponseModel.BETA_POISSON && (
+                        <>
+                          <ParamInput label="Alpha (α)" name="alpha" value={params.alpha} onChange={handleParamChange} step="0.001" tooltip={t.tooltips.alpha} error={errors.alpha} />
+                          <ParamInput label="Beta (β)" name="beta" value={params.beta} onChange={handleParamChange} step="1" tooltip={t.tooltips.beta} error={errors.beta} />
+                        </>
+                      )}
+                      {params.doseResponseModel === DoseResponseModel.EXPONENTIAL && (
+                        <div className="col-span-2">
+                          <ParamInput label={t.kLabel} name="k" value={params.k} onChange={handleParamChange} step="0.0001" tooltip={t.tooltips.k} error={errors.k} />
+                        </div>
+                      )}
+                      {params.doseResponseModel === DoseResponseModel.LOG_LOGISTIC && (
+                        <>
+                          <ParamInput label={t.d50Label} name="d50" value={params.d50} onChange={handleParamChange} step="1" tooltip={t.tooltips.d50} error={errors.d50} />
+                          <ParamInput label="Beta (β)" name="beta" value={params.beta} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.beta} error={errors.beta} />
+                        </>
+                      )}
+                      {params.doseResponseModel === DoseResponseModel.LOG_NORMAL && (
+                        <>
+                          <ParamInput label={t.d50Label} name="d50" value={params.d50} onChange={handleParamChange} step="1" tooltip={t.tooltips.d50} error={errors.d50} />
+                          <ParamInput label={t.drSigmaLabel} name="drSigma" value={params.drSigma} onChange={handleParamChange} step="0.1" tooltip={t.tooltips.drSigma} error={errors.drSigma} />
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1830,22 +1933,29 @@ const App: React.FC = () => {
                       </div>
 
                       <div className="bg-slate-50 dark:bg-slate-800/20 rounded-3xl border border-slate-100 dark:border-slate-800 overflow-hidden">
-                         <table className="w-full text-[10px]">
-                           <thead>
-                             <tr className="text-left text-slate-400 font-bold border-b border-slate-100 dark:border-slate-800">
-                               <th className="px-4 py-2">{t.timeMin}</th>
-                               <th className="px-4 py-2 text-right">{t.reductionLog}</th>
-                             </tr>
-                           </thead>
-                           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                             {weibullTableData.map((row, idx) => (
-                               <tr key={idx} className="hover:bg-slate-100/50 dark:hover:bg-slate-700/20 transition-colors">
-                                 <td className="px-4 py-2 font-mono text-slate-500">{row.t.toFixed(1)}</td>
-                                 <td className="px-4 py-2 text-right font-black text-blue-600 dark:text-blue-400">{row.logReduction.toFixed(3)}</td>
-                               </tr>
-                             ))}
-                           </tbody>
-                         </table>
+                          <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 bg-slate-100/30 dark:bg-slate-800/30">
+                            <h5 className="text-[9px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                              <Calculator size={10} /> {t.inactivationDetailTitle}
+                            </h5>
+                          </div>
+                          <table className="w-full text-[10px]">
+                            <thead>
+                              <tr className="text-left text-slate-400 font-bold border-b border-slate-100 dark:border-slate-800">
+                                <th className="px-4 py-2">{t.timeMin}</th>
+                                <th className="px-4 py-2 text-right">{t.intermediateValue}</th>
+                                <th className="px-4 py-2 text-right">{t.reductionLog}</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                              {weibullTableData.map((row, idx) => (
+                                <tr key={idx} className="hover:bg-slate-100/50 dark:hover:bg-slate-700/20 transition-colors">
+                                  <td className="px-4 py-2 font-mono text-slate-500">{row.t.toFixed(1)}</td>
+                                  <td className="px-4 py-2 text-right font-mono text-slate-400">{row.intermediate.toFixed(3)}</td>
+                                  <td className="px-4 py-2 text-right font-black text-blue-600 dark:text-blue-400">{row.logReduction.toFixed(3)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                       </div>
                     </div>
                   </div>

@@ -1,4 +1,11 @@
 
+export enum DoseResponseModel {
+  BETA_POISSON = 'beta_poisson',
+  EXPONENTIAL = 'exponential',
+  LOG_LOGISTIC = 'log_logistic',
+  LOG_NORMAL = 'log_normal'
+}
+
 export interface SimulationParams {
   // Configuración de Población y Consumo
   prevalence: number;
@@ -28,8 +35,12 @@ export interface SimulationParams {
   inactivationTime: number; // Tiempo de proceso térmico (min)
   
   // Dosis-Respuesta
+  doseResponseModel: DoseResponseModel;
   alpha: number;
   beta: number;
+  k: number;
+  d50: number;
+  drSigma: number;
   
   // Gravedad y Outcome
   illnessProb: number;
