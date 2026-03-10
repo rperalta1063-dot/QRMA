@@ -105,12 +105,6 @@ const TRANSLATIONS = {
     aboutDescription: "ProbRisk es una herramienta de Evaluación Cuantitativa de Riesgos Microbiológicos (QMRA) diseñada para estimar el impacto en la salud pública de patógenos transmitidos por alimentos.",
     methodologyTitle: "Metodología de Monte Carlo",
     methodologyDescription: "ProbRisk utiliza simulaciones de Monte Carlo para abordar la complejidad de los sistemas biológicos. En lugar de usar valores fijos, asignamos distribuciones de probabilidad a cada parámetro (incertidumbre y variabilidad). El motor de simulación ejecuta miles de iteraciones independientes; en cada una, se extrae un valor aleatorio de las distribuciones definidas. Este proceso permite capturar escenarios extremos (brotes masivos) que un cálculo promedio ignoraría, proporcionando una visión probabilística del riesgo real.",
-    guideTitle: "Guía de Configuración",
-    guideStep1: "1. Selección de Perfil: Elija el alimento y patógeno. Esto carga automáticamente el modelo dosis-respuesta (Beta-Poisson) y los parámetros económicos por defecto.",
-    guideStep2: "2. Dinámica de la Cadena: Configure los cambios logarítmicos (Δ Log). Un valor de -2.0 en procesamiento indica una reducción de 100 veces en la carga bacteriana. Los valores positivos representan crecimiento por abuso térmico o fallos de higiene.",
-    guideStep3: "3. Cinética Avanzada: Defina la tasa de crecimiento (Log/h) y el tiempo de exposición. Para la inactivación, el modelo Weibull (Delta y P) permite modelar curvas no lineales, capturando la resistencia de subpoblaciones bacterianas.",
-    guideStep4: "4. Simulación: Al presionar 'Ejecutar', el sistema realiza miles de cálculos de dosis ingerida y probabilidad de infección individual para cada ración consumida en la población.",
-    guideStep5: "5. Análisis de Resultados: Evalúe no solo la media, sino la dispersión de los datos. Un riesgo alto con baja frecuencia puede ser tan crítico como un riesgo moderado constante.",
     interpretationTitle: "Interpretación de Resultados",
     interpretationDesc: "La interpretación debe centrarse en tres ejes: 1. Distribución de Casos: El histograma muestra la frecuencia de diferentes tamaños de brotes; una cola larga a la derecha indica riesgo de eventos masivos. 2. Impacto Social: Traduce el daño a la salud en términos monetarios, facilitando la toma de decisiones costo-beneficio. 3. Sensibilidad: Identifica qué parámetro (ej. temperatura de retail) tiene mayor peso en el resultado final, señalando dónde invertir en medidas de control.",
     walkthroughTitle: "Walkthrough de Parámetros Complejos",
@@ -304,12 +298,6 @@ const TRANSLATIONS = {
     aboutDescription: "ProbRisk is a Quantitative Microbiological Risk Assessment (QMRA) tool designed to estimate the public health impact of foodborne pathogens.",
     methodologyTitle: "Monte Carlo Methodology",
     methodologyDescription: "ProbRisk employs Monte Carlo simulations to address the inherent complexity of biological systems. Instead of using point estimates, we assign probability distributions to each parameter to account for uncertainty and variability. The engine runs thousands of independent iterations; in each, a random value is drawn from the defined distributions. This process captures extreme scenarios (mass outbreaks) that a simple average would miss, providing a robust probabilistic view of real-world risk.",
-    guideTitle: "Setup Guide",
-    guideStep1: "1. Profile Selection: Choose your food and pathogen. This automatically loads the specific dose-response model (Beta-Poisson) and default economic parameters.",
-    guideStep2: "2. Chain Dynamics: Configure logarithmic changes (Δ Log). A value of -2.0 in processing indicates a 100-fold reduction in bacterial load. Positive values represent growth due to thermal abuse or hygiene failures.",
-    guideStep3: "3. Advanced Kinetics: Define the growth rate (Log/h) and exposure time. For inactivation, the Weibull model (Delta and P) allows for non-linear survival curves, capturing the resistance of bacterial subpopulations.",
-    guideStep4: "4. Simulation: Upon clicking 'Run', the system performs thousands of individual dose calculations and infection probability assessments for every serving consumed by the population.",
-    guideStep5: "5. Results Analysis: Evaluate not just the mean, but the data dispersion. A high-impact low-frequency risk can be just as critical as a constant moderate risk.",
     interpretationTitle: "Interpreting Results",
     interpretationDesc: "Interpretation should focus on three pillars: 1. Case Distribution: The histogram shows the frequency of different outbreak sizes; a long right tail indicates the risk of massive events. 2. Social Impact: Translates health damage into monetary terms, facilitating cost-benefit decision-making. 3. Sensitivity: Identifies which parameter (e.g., retail temperature) has the most weight on the final result, highlighting where to prioritize control measures.",
     walkthroughTitle: "Complex Parameters Walkthrough",
@@ -503,12 +491,6 @@ const TRANSLATIONS = {
     aboutDescription: "ProbRisk est un outil d'Évaluation Quantitative des Risques Microbiologiques (QMRA) conçu pour estimer l'impact sur la santé publique des agents pathogènes d'origine alimentaire.",
     methodologyTitle: "Méthodologie de Monte Carlo",
     methodologyDescription: "ProbRisk utilise des simulations de Monte Carlo pour aborder la complexité des systèmes biologiques. Au lieu de valeurs fixes, nous assignons des distributions de probabilité à chaque paramètre (incertitude et variabilité). Le moteur exécute des milliers d'itérations indépendantes ; dans chacune, une valeur aléatoire est tirée des distributions. Ce processus permet de capturer des scénarios extrêmes (foyers massifs) qu'un calcul moyen ignorerait, offrant une vision probabiliste du risque réel.",
-    guideTitle: "Guide de Configuration",
-    guideStep1: "1. Sélection du Profil : Choisissez l'aliment et le pathogène. Cela charge automatiquement le modèle dose-réponse (Beta-Poisson) et les paramètres économiques par défaut.",
-    guideStep2: "2. Dynamique de la Chaîne : Configurez les changements logarithmiques (Δ Log). Une valeur de -2.0 en traitement indique une réduction au centième de la charge bactérienne. Les valeurs positives représentent la croissance.",
-    guideStep3: "3. Cinétique Avancée : Définissez le taux de croissance (Log/h) et le temps d'exposition. Pour l'inactivation, le modèle Weibull (Delta et P) permet de modéliser des courbes non linéaires.",
-    guideStep4: "4. Simulation : En cliquant sur 'Lancer', le système effectue des milliers de calculs de doses ingérées et de probabilités d'infection pour chaque portion consommée.",
-    guideStep5: "5. Analyse des Résultats : Évaluez non seulement la moyenne, mais aussi la dispersion des données. Un risque rare mais massif peut être aussi critique qu'un risque modéré constant.",
     interpretationTitle: "Interprétation des Résultats",
     interpretationDesc: "L'interprétation doit se concentrer sur trois axes : 1. Distribution des Cas : L'histogramme montre la fréquence des différentes tailles de foyers ; une queue longue à droite indique un risque d'événements massifs. 2. Impact Social : Traduit les dommages sanitaires en termes monétaires pour faciliter les décisions coût-bénéfice. 3. Sensibilité : Identifie quel paramètre a le plus de poids sur le résultat final.",
     walkthroughTitle: "Walkthrough des Paramètres Complexes",
@@ -1472,7 +1454,6 @@ const App: React.FC = () => {
   const [showAbout, setShowAbout] = useState(false);
   const [showFAQ, setShowFAQ] = useState(false);
   const [showManual, setShowManual] = useState(false);
-  const [showGuide, setShowGuide] = useState(true);
 
   const t = TRANSLATIONS[language];
 
@@ -1854,17 +1835,6 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-blue-500">{t.guideTitle}</h3>
-                  <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                    <li>{t.guideStep1}</li>
-                    <li>{t.guideStep2}</li>
-                    <li>{t.guideStep3}</li>
-                    <li>{t.guideStep4}</li>
-                    <li>{t.guideStep5}</li>
-                  </ul>
-                </div>
-
-                <div className="space-y-2">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-blue-500">{t.interpretationTitle}</h3>
                   <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                     {t.interpretationDesc}
@@ -1933,13 +1903,6 @@ const App: React.FC = () => {
           </div>
           <div className="flex items-center gap-3">
             <button 
-              onClick={() => setShowGuide(!showGuide)}
-              className={`p-3 rounded-2xl border transition-all active:scale-95 ${showGuide ? 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-900/20 dark:border-blue-800' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400 hover:text-blue-500'}`}
-              title={t.guideTitle}
-            >
-              <Zap size={20} />
-            </button>
-            <button 
               onClick={() => setShowFAQ(true)}
               className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-transform active:scale-95 text-slate-400 hover:text-blue-500"
               title={t.faqTitle}
@@ -1987,33 +1950,6 @@ const App: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <aside className="lg:col-span-4 space-y-6 no-print">
-            {/* Quick Guide */}
-            {showGuide && (
-              <div className="bg-blue-600 p-6 rounded-[2rem] shadow-xl shadow-blue-600/20 text-white space-y-4 animate-in relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10 -rotate-12">
-                  <HelpCircle size={80} />
-                </div>
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xs font-black uppercase tracking-widest opacity-80 flex items-center gap-2">
-                    <Info size={14} /> {t.guideTitle}
-                  </h2>
-                  <button onClick={() => setShowGuide(false)} className="opacity-60 hover:opacity-100 transition-opacity">
-                    <X size={14} />
-                  </button>
-                </div>
-                <div className="space-y-3 relative z-10">
-                  {[t.guideStep1, t.guideStep2, t.guideStep3, t.guideStep4].map((step, i) => (
-                    <div key={i} className="flex gap-3 items-start">
-                      <div className="mt-1 bg-white/20 rounded-full p-0.5">
-                        <Check size={10} />
-                      </div>
-                      <p className="text-[11px] font-medium leading-relaxed opacity-90">{step}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Basic Config */}
             <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
               <SectionHeader title={t.baseConfig} icon={<ShoppingBag size={14} />} helpText={t.sectionHelpBase} />
