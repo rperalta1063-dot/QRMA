@@ -148,6 +148,8 @@ const TRANSLATIONS = {
     developersLabel: "Desarrolladores",
     developersContent: "ProbRisk Team / High-Resolution Analytics",
     close: "Cerrar",
+    userManualTitle: "Manual de Usuario",
+    userManualBtn: "Manual",
     faqTitle: "Preguntas Frecuentes (FAQ)",
     faqExpert: "Para Expertos",
     faqGeneral: "General",
@@ -345,6 +347,8 @@ const TRANSLATIONS = {
     developersLabel: "Developers",
     developersContent: "ProbRisk Team / High-Resolution Analytics",
     close: "Close",
+    userManualTitle: "User Manual",
+    userManualBtn: "Manual",
     faqTitle: "Frequently Asked Questions (FAQ)",
     faqExpert: "For Experts",
     faqGeneral: "General",
@@ -542,6 +546,8 @@ const TRANSLATIONS = {
     developersLabel: "Développeurs",
     developersContent: "ProbRisk Team / High-Resolution Analytics",
     close: "Fermer",
+    userManualTitle: "Manuel d'Utilisation",
+    userManualBtn: "Manuel",
     faqTitle: "Foire Aux Questions (FAQ)",
     faqExpert: "Pour Experts",
     faqGeneral: "Général",
@@ -1082,6 +1088,232 @@ const ComparisonModal: React.FC<{
   );
 };
 
+const UserManualModal: React.FC<{ isOpen: boolean; onClose: () => void; t: any; language: string }> = ({ isOpen, onClose, t, language }) => {
+  const [activeSection, setActiveSection] = useState(0);
+
+  if (!isOpen) return null;
+
+  const manualContent = {
+    es: [
+      {
+        title: "1. Introducción",
+        content: `ProbRisk QMRA es una aplicación avanzada para la Evaluación Cuantitativa de Riesgo Microbiológico (QMRA) en la cadena alimentaria. Utiliza simulación Monte Carlo para modelar la evolución de patógenos, proporcionando estimaciones probabilísticas de impactos en salud pública y económicos.
+        
+        Objetivos:
+        • Evaluar riesgos microbiológicos en alimentos.
+        • Simular escenarios de contaminación y mitigación.
+        • Cuantificar impactos en salud (infecciones, muertes).
+        • Estimar costos económicos asociados.`
+      },
+      {
+        title: "2. Estructura de la Interfaz",
+        content: `La interfaz se divide en tres áreas principales:
+        • Cabecera: Controles de idioma, tema y ejecución.
+        • Panel Lateral: Configuración de parámetros base y etapas de exposición.
+        • Área Principal: Visualización de resultados, gráficos y análisis estadístico.`
+      },
+      {
+        title: "3. Parámetros y Configuración",
+        content: `• Selección de Alimento: Define el vehículo de transmisión.
+        • Selección de Patógeno: Carga el modelo dosis-respuesta específico.
+        • Parámetros Poblacionales: Población expuesta y raciones por año.
+        • Etapas de la Cadena: Prevalencia, carga inicial y cambios logarítmicos (Δ log) en procesamiento, transporte, retail y preparación.`
+      },
+      {
+        title: "4. Ejecución de Simulaciones",
+        content: `Flujo de trabajo recomendado:
+        1. Seleccionar alimento y patógeno.
+        2. Ajustar parámetros poblacionales.
+        3. Definir cambios en la cadena alimentaria.
+        4. Hacer clic en "Ejecutar Monte Carlo".
+        5. Analizar los resultados generados.`
+      },
+      {
+        title: "5. Interpretación de Resultados",
+        content: `• Tarjetas de Impacto: Estimaciones de infecciones, casos graves y muertes.
+        • Histograma: Distribución de probabilidad del tamaño del brote.
+        • Evaluación Económica: Costos sanitarios y de productividad.
+        • Análisis de Sensibilidad: Identifica qué parámetros tienen mayor impacto en el riesgo total.`
+      },
+      {
+        title: "6. Modelos Matemáticos",
+        content: `• Monte Carlo: Simulación iterativa para capturar variabilidad.
+        • Beta-Poisson: Modelo dosis-respuesta para probabilidad de infección.
+        • Weibull: Modelo de cinética de inactivación térmica no lineal.`
+      },
+      {
+        title: "7. Glosario",
+        content: `• QMRA: Evaluación Cuantitativa de Riesgo Microbiológico.
+        • Prevalencia: Proporción de unidades contaminadas.
+        • Delta log (Δ log): Cambio en concentración logarítmica.
+        • RTE: Alimentos Listos para Consumo (Ready-to-Eat).`
+      }
+    ],
+    en: [
+      {
+        title: "1. Introduction",
+        content: `ProbRisk QMRA is an advanced application for Quantitative Microbiological Risk Assessment (QMRA) in the food chain. It uses Monte Carlo simulation to model pathogen evolution, providing probabilistic estimates of public health and economic impacts.
+        
+        Objectives:
+        • Evaluate microbiological risks in food.
+        • Simulate contamination and mitigation scenarios.
+        • Quantify health impacts (infections, deaths).
+        • Estimate associated economic costs.`
+      },
+      {
+        title: "2. Interface Structure",
+        content: `The interface is divided into three main areas:
+        • Header: Language, theme, and execution controls.
+        • Sidebar: Base parameters and exposure stages configuration.
+        • Main Area: Results visualization, charts, and statistical analysis.`
+      },
+      {
+        title: "3. Parameters & Configuration",
+        content: `• Food Selection: Defines the transmission vehicle.
+        • Pathogen Selection: Loads the specific dose-response model.
+        • Population Parameters: Exposed population and servings per year.
+        • Chain Stages: Prevalence, initial load, and logarithmic changes (Δ log) in processing, transport, retail, and preparation.`
+      },
+      {
+        title: "4. Running Simulations",
+        content: `Recommended workflow:
+        1. Select food and pathogen.
+        2. Adjust population parameters.
+        3. Define changes in the food chain.
+        4. Click "Run Monte Carlo".
+        5. Analyze the generated results.`
+      },
+      {
+        title: "5. Interpreting Results",
+        content: `• Impact Cards: Estimates of infections, severe cases, and deaths.
+        • Histogram: Probability distribution of outbreak size.
+        • Economic Evaluation: Health and productivity costs.
+        • Sensitivity Analysis: Identifies which parameters have the most impact on total risk.`
+      },
+      {
+        title: "6. Mathematical Models",
+        content: `• Monte Carlo: Iterative simulation to capture variability.
+        • Beta-Poisson: Dose-response model for infection probability.
+        • Weibull: Non-linear thermal inactivation kinetics model.`
+      },
+      {
+        title: "7. Glossary",
+        content: `• QMRA: Quantitative Microbiological Risk Assessment.
+        • Prevalence: Proportion of contaminated units.
+        • Delta log (Δ log): Change in logarithmic concentration.
+        • RTE: Ready-to-Eat foods.`
+      }
+    ],
+    fr: [
+      {
+        title: "1. Introduction",
+        content: `ProbRisk QMRA est une application avancée pour l'Évaluation Quantitative des Risques Microbiologiques (QMRA) dans la chaîne alimentaire. Elle utilise la simulation de Monte Carlo pour modéliser l'évolution des agents pathogènes, fournissant des estimations probabilistes des impacts sur la santé publique et l'économie.
+        
+        Objectifs :
+        • Évaluer les risques microbiologiques dans les aliments.
+        • Simuler des scénarios de contamination et d'atténuation.
+        • Quantifier les impacts sur la santé (infections, décès).
+        • Estimer les coûts économiques associés.`
+      },
+      {
+        title: "2. Structure de l'Interface",
+        content: `L'interface est divisée en trois zones principales :
+        • En-tête : Contrôles de langue, de thème et d'exécution.
+        • Barre Latérale : Configuration des paramètres de base et des étapes d'exposition.
+        • Zone Principale : Visualisation des résultats, graphiques et analyse statistique.`
+      },
+      {
+        title: "3. Paramètres et Configuration",
+        content: `• Sélection de l'Aliment : Définit le véhicule de transmission.
+        • Sélection du Pathogène : Charge le modèle dose-réponse spécifique.
+        • Paramètres de Population : Population exposée et portions par an.
+        • Étapes de la Chaîne : Prévalence, charge initiale et changements logarithmiques (Δ log) lors du traitement, du transport, de la vente et de la préparation.`
+      },
+      {
+        title: "4. Exécution des Simulations",
+        content: `Flux de travail recommandé :
+        1. Sélectionner l'aliment et le pathogène.
+        2. Ajuster les paramètres de population.
+        3. Définir les changements dans la chaîne alimentaire.
+        4. Cliquer sur "Lancer Monte Carlo".
+        5. Analyser les résultats générés.`
+      },
+      {
+        title: "5. Interprétation des Résultats",
+        content: `• Cartes d'Impact : Estimations des infections, des cas graves et des décès.
+        • Histogramme : Distribution de probabilité de la taille de l'épidémie.
+        • Évaluation Économique : Coûts de santé et de productivité.
+        • Analyse de Sensibilité : Identifie les paramètres ayant le plus d'impact sur le risque total.`
+      },
+      {
+        title: "6. Modèles Mathématiques",
+        content: `• Monte Carlo : Simulation itérative pour capturer la variabilité.
+        • Bêta-Poisson : Modèle dose-réponse pour la probabilité d'infection.
+        • Weibull : Modèle de cinétique d'inactivation thermique non linéaire.`
+      },
+      {
+        title: "7. Glossaire",
+        content: `• QMRA : Évaluation Quantitative des Risques Microbiologiques.
+        • Prévalence : Proportion d'unités contaminées.
+        • Delta log (Δ log) : Changement de concentration logarithmique.
+        • RTE : Aliments prêts à consommer (Ready-to-Eat).`
+      }
+    ]
+  };
+
+  const sections = manualContent[language as keyof typeof manualContent] || manualContent.en;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-300">
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white dark:bg-slate-900 w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl flex flex-col md:flex-row overflow-hidden border border-slate-200 dark:border-slate-800">
+        {/* Sidebar */}
+        <div className="w-full md:w-64 bg-slate-50 dark:bg-slate-800/50 border-r border-slate-100 dark:border-slate-800 flex flex-col">
+          <div className="p-8 border-b border-slate-100 dark:border-slate-800">
+            <h2 className="text-xl font-black flex items-center gap-3">
+              <FileDown size={20} className="text-blue-600" />
+              {t.userManualTitle}
+            </h2>
+          </div>
+          <nav className="flex-1 overflow-y-auto p-4 space-y-1 custom-scrollbar">
+            {sections.map((section, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveSection(idx)}
+                className={`w-full text-left px-4 py-3 rounded-2xl text-sm font-bold transition-all ${activeSection === idx ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+              >
+                {section.title}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
+            <h3 className="text-2xl font-black">{sections[activeSection].title}</h3>
+            <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-400">
+              <X size={24} />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-8 md:p-12 custom-scrollbar">
+            <div className="prose dark:prose-invert max-w-none">
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap text-lg">
+                {sections[activeSection].content}
+              </p>
+            </div>
+          </div>
+          <div className="p-8 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+            <button onClick={onClose} className="px-8 py-4 rounded-2xl bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-xl">
+              {t.close}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const FAQModal: React.FC<{ isOpen: boolean; onClose: () => void; t: any }> = ({ isOpen, onClose, t }) => {
   const [activeTab, setActiveTab] = useState<'general' | 'expert'>('general');
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
@@ -1239,6 +1471,7 @@ const App: React.FC = () => {
 
   const [showAbout, setShowAbout] = useState(false);
   const [showFAQ, setShowFAQ] = useState(false);
+  const [showManual, setShowManual] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
 
   const t = TRANSLATIONS[language];
@@ -1682,6 +1915,9 @@ const App: React.FC = () => {
       {/* FAQ Modal */}
       <FAQModal isOpen={showFAQ} onClose={() => setShowFAQ(false)} t={t} />
 
+      {/* User Manual Modal */}
+      <UserManualModal isOpen={showManual} onClose={() => setShowManual(false)} t={t} language={language} />
+
       <div className="max-w-7xl mx-auto">
         <header className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6 no-print">
           <div className="flex items-center gap-4">
@@ -1709,6 +1945,13 @@ const App: React.FC = () => {
               title={t.faqTitle}
             >
               <HelpCircle size={20} />
+            </button>
+            <button 
+              onClick={() => setShowManual(true)}
+              className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-transform active:scale-95 text-slate-400 hover:text-blue-500"
+              title={t.userManualTitle}
+            >
+              <FileDown size={20} />
             </button>
             <button 
               onClick={() => setShowAbout(true)}
